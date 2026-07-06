@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Orion demo GIF placeholder">
+  <rect width="960" height="540" fill="#0c0e12"/>
+  <rect x="48" y="48" width="864" height="444" rx="24" fill="#12151b" stroke="#2b313c"/>
+  <circle cx="480" cy="270" r="68" fill="#5b8dff"/>
+  <path d="M462 232l72 38-72 38v-76z" fill="#07132f"/>
+  <text x="306" y="390" fill="#f4f6f8" font-family="Arial, sans-serif" font-size="30" font-weight="700">Demo GIF Placeholder</text>
+</svg>

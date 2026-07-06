@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844" role="img" aria-label="Orion mobile installed experience">
+  <rect width="390" height="844" fill="#0c0e12"/>
+  <rect x="18" y="24" width="354" height="796" rx="28" fill="#12151b" stroke="#2b313c"/>
+  <text x="42" y="78" fill="#f4f6f8" font-family="Arial, sans-serif" font-size="28" font-weight="700">Orion</text>
+  <rect x="42" y="116" width="306" height="92" rx="16" fill="#202733"/>
+  <rect x="42" y="248" width="220" height="76" rx="14" fill="#252c37"/>
+  <rect x="88" y="356" width="260" height="94" rx="14" fill="#f4f6f8"/>
+  <rect x="42" y="500" width="306" height="54" rx="12" fill="#151922" stroke="#2b313c"/>
+  <rect x="42" y="686" width="306" height="60" rx="18" fill="#171c25" stroke="#2b313c"/>
+  <circle cx="78" cy="716" r="12" fill="#5b8dff"/>
+  <circle cx="156" cy="716" r="12" fill="#43d78a"/>
+  <circle cx="234" cy="716" r="12" fill="#f6bc56"/>
+  <circle cx="312" cy="716" r="12" fill="#9aa4b2"/>
+</svg>

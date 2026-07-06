@@ -1,0 +1,107 @@
+"use client";
+
+import { FormEvent, KeyboardEvent, useEffect, useRef } from "react";
+import { ArrowUp, Plus, Square } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+import { cn } from "@/lib/utils/cn";
+
+export function PromptInput({
+  value,
+  loading,
+  canRegenerate = false,
+  canContinue = false,
+  canSubmit = true,
+  guidance,
+  onChange,
+  onSubmit,
+  onClear,
+  onStop,
+  onRegenerate,
+  onContinue
+}: {
+  value: string;
+  loading: boolean;
+  canRegenerate?: boolean;
+  canContinue?: boolean;
+  canSubmit?: boolean;
+  guidance?: string;
+  onChange: (value: string) => void;
+  onSubmit: () => void;
+  onClear: () => void;
+  onStop: () => void;
+  onRegenerate?: () => void;
+  onContinue?: () => void;
+}) {
+  const ref = useRef<HTMLTextAreaElement>(null);
+  const trimmed = value.trim();
+  const approximateTokens = Math.ceil(trimmed.length / 4);
+
+  useEffect(() => {
+    ref.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    const textarea = ref.current;
+    if (!textarea) {
+      return;
+    }
+    textarea.style.height = "0px";
+    textarea.style.height = `${Math.min(textarea.scrollHeight, 220)}px`;
+  }, [value]);
+
+  function submit(event?: FormEvent<HTMLFormElement>) {
+    event?.preventDefault();
+    if (!trimmed || loading || !canSubmit) {
+      return;
+    }
+    onSubmit();
+  }
+
+  function onKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
+    if (event.key === "Escape" && loading) {
+      event.preventDefault();
+      onStop();
+      return;
+    }
+
+    if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+      event.preventDefault();
+      submit();
+    }
+  }
+
+  return (
+    <div className="relative mx-auto w-full max-w-3xl px-4 pb-6">
+      <form onSubmit={submit} className="relative flex items-end overflow-hidden rounded-[26px] bg-secondary/60 focus-within:bg-secondary/80 transition-colors">
+        <Button aria-label="Attach" type="button" variant="ghost" size="icon" className="mb-2 ml-2 h-10 w-10 shrink-0 rounded-full text-foreground hover:bg-background/50">
+          <Plus className="size-5" />
+        </Button>
+        <textarea
+          ref={ref}
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          onKeyDown={onKeyDown}
+          placeholder="Message Orion..."
+          rows={1}
+          className="max-h-52 min-h-[56px] w-full resize-none bg-transparent px-2 py-4 text-base outline-none placeholder:text-muted-foreground/80 scrollbar-subtle"
+          aria-label="Message Orion"
+        />
+        <div className="mb-2 mr-2 flex shrink-0 items-center">
+          {loading ? (
+            <Button aria-label="Stop generation" type="button" onClick={onStop} className="h-10 w-10 rounded-full bg-foreground text-background hover:bg-foreground/90 shadow-sm">
+              <Square className="size-4 fill-current" />
+            </Button>
+          ) : (
+            <Button aria-label="Send message" type="submit" disabled={!canSubmit || !trimmed} className={cn("h-10 w-10 rounded-full transition-all shadow-sm", trimmed && canSubmit ? "bg-foreground text-background hover:bg-foreground/90" : "bg-muted text-muted-foreground")}>
+              <ArrowUp className="size-5" />
+            </Button>
+          )}
+        </div>
+      </form>
+      <div className="mt-2 text-center text-xs text-muted-foreground">
+        {guidance ?? "Orion runs locally and can make mistakes. Check important info."}
+      </div>
+    </div>
+  );
+}

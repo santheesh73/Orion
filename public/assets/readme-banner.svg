@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="420" viewBox="0 0 1400 420" role="img" aria-label="Orion readme banner">
+  <rect width="1400" height="420" fill="#0c0e12"/>
+  <rect x="48" y="48" width="1304" height="324" rx="28" fill="#12151b" stroke="#2b313c"/>
+  <text x="100" y="158" fill="#f4f6f8" font-family="Arial, sans-serif" font-size="72" font-weight="700">Orion</text>
+  <text x="104" y="214" fill="#9aa4b2" font-family="Arial, sans-serif" font-size="28">Private AI. Zero Cloud. Infinite Possibilities.</text>
+  <rect x="102" y="260" width="166" height="42" rx="10" fill="#5b8dff"/>
+  <text x="130" y="288" fill="#07132f" font-family="Arial, sans-serif" font-size="16" font-weight="700">OSDHack 2026</text>
+  <rect x="960" y="112" width="280" height="196" rx="18" fill="#202733"/>
+  <rect x="990" y="146" width="132" height="22" rx="6" fill="#43d78a"/>
+  <rect x="990" y="188" width="210" height="24" rx="6" fill="#2b313c"/>
+  <rect x="990" y="230" width="172" height="24" rx="6" fill="#2b313c"/>
+  <circle cx="1230" cy="142" r="8" fill="#43d78a"/>
+</svg>

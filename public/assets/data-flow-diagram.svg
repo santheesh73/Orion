@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="520" viewBox="0 0 1100 520" role="img" aria-label="Orion data flow diagram">
+  <rect width="1100" height="520" fill="#0c0e12"/>
+  <text x="60" y="70" fill="#f4f6f8" font-family="Arial, sans-serif" font-size="34" font-weight="700">Local Data Flow</text>
+  <g fill="#12151b" stroke="#2b313c" stroke-width="2">
+    <rect x="70" y="150" width="170" height="90" rx="14"/>
+    <rect x="300" y="150" width="170" height="90" rx="14"/>
+    <rect x="530" y="150" width="170" height="90" rx="14"/>
+    <rect x="760" y="150" width="220" height="90" rx="14"/>
+    <rect x="530" y="330" width="220" height="90" rx="14"/>
+  </g>
+  <g fill="#f4f6f8" font-family="Arial, sans-serif" font-size="17" font-weight="700">
+    <text x="112" y="202">Upload</text>
+    <text x="342" y="202">Parse</text>
+    <text x="572" y="202">Chunk</text>
+    <text x="812" y="202">IndexedDB</text>
+    <text x="578" y="382">Local Chat Context</text>
+  </g>
+  <g stroke="#43d78a" stroke-width="3" marker-end="url(#arrow)">
+    <line x1="240" y1="195" x2="300" y2="195"/>
+    <line x1="470" y1="195" x2="530" y2="195"/>
+    <line x1="700" y1="195" x2="760" y2="195"/>
+    <line x1="870" y1="240" x2="662" y2="330"/>
+  </g>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#43d78a"/></marker></defs>
+</svg>

@@ -1,0 +1,331 @@
+@import "tailwindcss";
+@import "highlight.js/styles/atom-one-dark.css";
+@import "../styles/design-system.css";
+
+:root {
+  color-scheme: light;
+  --background: 250 250 248;
+  --foreground: 22 24 29;
+  --surface: 247 248 250;
+  --surface-elevated: 255 255 255;
+  --card: 255 255 255;
+  --card-foreground: 22 24 29;
+  --popover: 255 255 255;
+  --popover-foreground: 22 24 29;
+  --primary: 34 86 255;
+  --primary-foreground: 255 255 255;
+  --secondary: 239 241 244;
+  --secondary-foreground: 34 38 45;
+  --accent: 21 184 111;
+  --accent-foreground: 5 38 24;
+  --success: 26 162 91;
+  --success-foreground: 255 255 255;
+  --warning: 226 150 35;
+  --warning-foreground: 31 22 7;
+  --error: 225 63 63;
+  --error-foreground: 255 255 255;
+  --destructive: 225 63 63;
+  --destructive-foreground: 255 255 255;
+  --muted: 239 241 244;
+  --muted-foreground: 101 109 122;
+  --border: 220 224 230;
+  --input: 220 224 230;
+  --ring: 55 108 255;
+  --hover: 232 236 242;
+  --focus: 55 108 255;
+  --disabled: 210 215 222;
+  --disabled-foreground: 129 138 151;
+  --glass: 255 255 255;
+  --glass-border: 255 255 255;
+  --shadow-soft: 0 8px 24px rgba(20, 24, 31, 0.08);
+  --shadow-medium: 0 16px 48px rgba(20, 24, 31, 0.12);
+  --shadow-large: 0 24px 72px rgba(20, 24, 31, 0.16);
+  --shadow-glass: 0 20px 70px rgba(20, 24, 31, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  --shadow-floating-panel: 0 18px 60px rgba(20, 24, 31, 0.18);
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: 14 16 21;
+  --foreground: 244 244 245;
+  --surface: 20 22 28;
+  --surface-elevated: 24 26 33;
+  --card: 20 22 28;
+  --card-foreground: 244 244 245;
+  --popover: 28 30 38;
+  --popover-foreground: 244 244 245;
+  --primary: 94 106 210;
+  --primary-foreground: 255 255 255;
+  --secondary: 32 35 44;
+  --secondary-foreground: 235 235 238;
+  --accent: 67 215 138;
+  --accent-foreground: 4 30 17;
+  --success: 67 215 138;
+  --success-foreground: 4 30 17;
+  --warning: 246 188 86;
+  --warning-foreground: 38 25 5;
+  --error: 240 82 82;
+  --error-foreground: 255 255 255;
+  --destructive: 240 82 82;
+  --destructive-foreground: 255 255 255;
+  --muted: 32 35 44;
+  --muted-foreground: 138 143 152;
+  --border: 39 42 53;
+  --input: 44 47 60;
+  --ring: 94 106 210;
+  --hover: 41 44 55;
+  --focus: 94 106 210;
+  --disabled: 44 47 60;
+  --disabled-foreground: 138 143 152;
+  --glass: 20 22 28;
+  --glass-border: 255 255 255;
+  --shadow-soft: 0 4px 14px rgba(0, 0, 0, 0.4);
+  --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.5);
+  --shadow-large: 0 30px 60px rgba(0, 0, 0, 0.6);
+  --shadow-glass: 0 20px 70px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-floating-panel: 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+@theme inline {
+  --breakpoint-xs: 30rem;
+  --color-background: rgb(var(--background));
+  --color-foreground: rgb(var(--foreground));
+  --color-surface: rgb(var(--surface));
+  --color-surface-elevated: rgb(var(--surface-elevated));
+  --color-card: rgb(var(--card));
+  --color-card-foreground: rgb(var(--card-foreground));
+  --color-popover: rgb(var(--popover));
+  --color-popover-foreground: rgb(var(--popover-foreground));
+  --color-primary: rgb(var(--primary));
+  --color-primary-foreground: rgb(var(--primary-foreground));
+  --color-secondary: rgb(var(--secondary));
+  --color-secondary-foreground: rgb(var(--secondary-foreground));
+  --color-accent: rgb(var(--accent));
+  --color-accent-foreground: rgb(var(--accent-foreground));
+  --color-success: rgb(var(--success));
+  --color-success-foreground: rgb(var(--success-foreground));
+  --color-warning: rgb(var(--warning));
+  --color-warning-foreground: rgb(var(--warning-foreground));
+  --color-error: rgb(var(--error));
+  --color-error-foreground: rgb(var(--error-foreground));
+  --color-destructive: rgb(var(--destructive));
+  --color-destructive-foreground: rgb(var(--destructive-foreground));
+  --color-muted: rgb(var(--muted));
+  --color-muted-foreground: rgb(var(--muted-foreground));
+  --color-border: rgb(var(--border));
+  --color-input: rgb(var(--input));
+  --color-ring: rgb(var(--ring));
+  --color-hover: rgb(var(--hover));
+  --color-focus: rgb(var(--focus));
+  --color-disabled: rgb(var(--disabled));
+  --color-disabled-foreground: rgb(var(--disabled-foreground));
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-10: 2.5rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  --spacing-20: 5rem;
+  --spacing-24: 6rem;
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-full: var(--radius-full);
+  --shadow-soft: var(--shadow-soft);
+  --shadow-medium: var(--shadow-medium);
+  --shadow-large: var(--shadow-large);
+  --shadow-glass: var(--shadow-glass);
+  --shadow-floating-panel: var(--shadow-floating-panel);
+}
+
+* {
+  border-color: rgb(var(--border));
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background: rgb(var(--background));
+  color: rgb(var(--foreground));
+  overflow-x: hidden;
+  font-feature-settings:
+    "rlig" 1,
+    "calt" 1;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(55, 108, 255, 0.22);
+}
+
+:focus-visible {
+  outline: 2px solid rgb(var(--focus));
+  outline-offset: 2px;
+}
+
+[data-disabled="true"],
+:disabled {
+  cursor: not-allowed;
+}
+
+.text-display {
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  line-height: 0.92;
+  letter-spacing: 0;
+  font-weight: 650;
+}
+
+.text-heading-1 {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: 0;
+  font-weight: 650;
+}
+
+.text-heading-2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: 0;
+  font-weight: 620;
+}
+
+.text-heading-3 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: 0;
+  font-weight: 620;
+}
+
+.text-heading-4 {
+  font-size: 1.125rem;
+  line-height: 1.35;
+  letter-spacing: 0;
+  font-weight: 600;
+}
+
+.text-body-large {
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+.text-body {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+
+.text-caption {
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.text-code {
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.text-button {
+  font-size: 0.875rem;
+  line-height: 1;
+  font-weight: 560;
+}
+
+.glass {
+  border: 1px solid rgba(var(--glass-border), 0.18);
+  background: rgba(var(--glass), 0.72);
+  box-shadow: var(--shadow-glass);
+  backdrop-filter: blur(22px) saturate(140%);
+}
+
+.scrollbar-subtle {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--muted-foreground), 0.42) transparent;
+}
+
+.scrollbar-subtle::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.scrollbar-subtle::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: rgba(var(--muted-foreground), 0.42);
+  background-clip: padding-box;
+}
+
+.prose {
+  color: inherit;
+}
+
+.prose :where(p, ul, ol, table, pre) {
+  margin-bottom: 0.85rem;
+}
+
+.prose :where(ul, ol) {
+  padding-left: 1.25rem;
+}
+
+.prose :where(ul) {
+  list-style: disc;
+}
+
+.prose :where(ol) {
+  list-style: decimal;
+}
+
+.prose :where(a) {
+  color: rgb(var(--ring));
+  text-decoration: underline;
+}
+
+.prose :where(code):not(:where(pre code)) {
+  border-radius: 0.375rem;
+  background: rgb(var(--secondary));
+  padding: 0.125rem 0.25rem;
+  font-size: 0.85em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --border: 84 91 105;
+    --muted-foreground: 55 65 81;
+  }
+
+  .dark {
+    --border: 178 188 204;
+    --muted-foreground: 220 226 235;
+  }
+}

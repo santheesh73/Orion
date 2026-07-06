@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="560" viewBox="0 0 1100 560" role="img" aria-label="Orion component diagram">
+  <rect width="1100" height="560" fill="#0c0e12"/>
+  <text x="60" y="70" fill="#f4f6f8" font-family="Arial, sans-serif" font-size="34" font-weight="700">Component Map</text>
+  <g fill="#12151b" stroke="#2b313c" stroke-width="2">
+    <rect x="70" y="130" width="220" height="110" rx="14"/>
+    <rect x="330" y="130" width="220" height="110" rx="14"/>
+    <rect x="590" y="130" width="220" height="110" rx="14"/>
+    <rect x="70" y="310" width="220" height="110" rx="14"/>
+    <rect x="330" y="310" width="220" height="110" rx="14"/>
+    <rect x="590" y="310" width="220" height="110" rx="14"/>
+  </g>
+  <g fill="#f4f6f8" font-family="Arial, sans-serif" font-size="18" font-weight="700">
+    <text x="134" y="188">Layout</text>
+    <text x="390" y="188">Chat</text>
+    <text x="638" y="188">Documents</text>
+    <text x="136" y="368">Models</text>
+    <text x="388" y="368">Settings</text>
+    <text x="664" y="368">PWA</text>
+  </g>
+  <g fill="#9aa4b2" font-family="Arial, sans-serif" font-size="14">
+    <text x="112" y="214">Shell, nav, panels</text>
+    <text x="368" y="214">Messages, prompts</text>
+    <text x="624" y="214">Upload, preview, search</text>
+    <text x="104" y="394">Download, verify, load</text>
+    <text x="366" y="394">Storage, privacy, a11y</text>
+    <text x="626" y="394">Install, cache, perf</text>
+  </g>
+</svg>

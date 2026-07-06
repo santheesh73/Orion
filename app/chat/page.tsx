@@ -1,0 +1,11 @@
+import type { Metadata } from "next";
+import { ChatLayout } from "@/features/chat/components/chat-layout";
+
+export const metadata: Metadata = {
+  title: "Chat - Orion",
+  description: "A premium UI-only chat interface for Orion's on-device AI workspace."
+};
+
+export default function ChatPage() {
+  return <ChatLayout />;
+}

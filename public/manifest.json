@@ -1,0 +1,69 @@
+{
+  "name": "Orion",
+  "short_name": "Orion",
+  "description": "The Private AI That Lives On Your Device",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "background_color": "#0c0e12",
+  "theme_color": "#0c0e12",
+  "orientation": "any",
+  "id": "/?source=pwa",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/orion-wide.svg",
+      "sizes": "1280x720",
+      "type": "image/svg+xml",
+      "form_factor": "wide",
+      "label": "Orion desktop AI workspace"
+    },
+    {
+      "src": "/screenshots/orion-mobile.svg",
+      "sizes": "390x844",
+      "type": "image/svg+xml",
+      "form_factor": "narrow",
+      "label": "Orion mobile installed experience"
+    }
+  ],
+  "categories": ["productivity", "utilities", "education"],
+  "shortcuts": [
+    {
+      "name": "New Chat",
+      "short_name": "Chat",
+      "description": "Open Orion Chat",
+      "url": "/chat",
+      "icons": [{ "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Documents",
+      "short_name": "Docs",
+      "description": "Open local document intelligence",
+      "url": "/documents",
+      "icons": [{ "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Model Manager",
+      "short_name": "Models",
+      "description": "Manage local AI models",
+      "url": "/models",
+      "icons": [{ "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Performance",
+      "short_name": "Perf",
+      "description": "Inspect offline and performance status",
+      "url": "/performance",
+      "icons": [{ "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    }
+  ],
+  "prefer_related_applications": false
+}

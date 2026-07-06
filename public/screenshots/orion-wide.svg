@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="Orion desktop AI workspace">
+  <rect width="1280" height="720" fill="#0c0e12"/>
+  <rect x="48" y="48" width="1184" height="624" rx="24" fill="#12151b" stroke="#2b313c"/>
+  <rect x="48" y="48" width="260" height="624" rx="24" fill="#151922"/>
+  <text x="88" y="112" fill="#f4f6f8" font-family="Arial, sans-serif" font-size="36" font-weight="700">Orion</text>
+  <text x="88" y="150" fill="#9aa4b2" font-family="Arial, sans-serif" font-size="18">Private on-device AI</text>
+  <rect x="88" y="210" width="180" height="44" rx="8" fill="#5b8dff"/>
+  <rect x="88" y="274" width="150" height="36" rx="8" fill="#202733"/>
+  <rect x="88" y="326" width="168" height="36" rx="8" fill="#202733"/>
+  <rect x="360" y="96" width="792" height="92" rx="16" fill="#202733"/>
+  <text x="392" y="150" fill="#f4f6f8" font-family="Arial, sans-serif" font-size="28" font-weight="700">Local LLM Workspace</text>
+  <rect x="360" y="236" width="440" height="84" rx="16" fill="#252c37"/>
+  <rect x="624" y="368" width="528" height="104" rx="16" fill="#f4f6f8"/>
+  <rect x="360" y="548" width="792" height="56" rx="12" fill="#151922" stroke="#2b313c"/>
+  <circle cx="1104" cy="138" r="8" fill="#43d78a"/>
+  <text x="1034" y="145" fill="#43d78a" font-family="Arial, sans-serif" font-size="16">Offline ready</text>
+</svg>

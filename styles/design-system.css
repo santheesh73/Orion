@@ -1,0 +1,13 @@
+@layer utilities {
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+
+  .interactive {
+    @apply transition duration-200 ease-out hover:bg-hover active:scale-[0.99];
+  }
+
+  .disabled-state {
+    @apply disabled:pointer-events-none disabled:bg-disabled disabled:text-disabled-foreground disabled:opacity-70;
+  }
+}

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Orion">
+  <rect width="64" height="64" rx="14" fill="#0c0e12"/>
+  <path d="M32 10l5.2 16.3L54 32l-16.8 5.7L32 54l-5.2-16.3L10 32l16.8-5.7L32 10z" fill="#5b8dff"/>
+  <circle cx="32" cy="32" r="7" fill="#43d78a"/>
+</svg>

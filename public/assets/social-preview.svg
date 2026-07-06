@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Orion social preview">
+  <rect width="1200" height="630" fill="#0c0e12"/>
+  <rect x="70" y="70" width="1060" height="490" rx="32" fill="#12151b" stroke="#2b313c"/>
+  <path d="M220 142l28 88 90 30-90 30-28 88-28-88-90-30 90-30 28-88z" fill="#5b8dff"/>
+  <text x="420" y="246" fill="#f4f6f8" font-family="Arial, sans-serif" font-size="84" font-weight="700">Orion</text>
+  <text x="424" y="318" fill="#9aa4b2" font-family="Arial, sans-serif" font-size="34">The Private AI That Lives On Your Device</text>
+  <text x="424" y="382" fill="#43d78a" font-family="Arial, sans-serif" font-size="28">Offline-first • WebLLM • IndexedDB • PWA</text>
+</svg>
