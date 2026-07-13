@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { m, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence, type Variants } from "framer-motion";
 import { Sparkles, ArrowRight, Download, CheckCircle2, Cpu } from "lucide-react";
 import { useAI } from "@/hooks/useAI";
 import { DEFAULT_MODEL_ID, ORION_MODELS } from "@/lib/constants/models";
 import { formatBytes } from "@/services/ai/stream";
 import { Button } from "@/components/ui/button";
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -17,7 +17,7 @@ const containerVariants = {
   }
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
 };

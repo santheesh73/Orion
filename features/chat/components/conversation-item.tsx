@@ -2,11 +2,11 @@
 
 import { MoreHorizontal, Pin, Star, MessageSquare } from "lucide-react";
 import type { MouseEvent } from "react";
-import { m } from "framer-motion";
+import { m, type Variants } from "framer-motion";
 import type { Conversation } from "@/features/chat/types/chat-ui";
 import { cn } from "@/lib/utils/cn";
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, x: -10 },
   show: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 400, damping: 30 } }
 };
