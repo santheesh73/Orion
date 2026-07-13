@@ -156,12 +156,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </AnimatePresence>
       </m.aside>
 
-      <m.header 
-        initial={false}
-        animate={{ marginLeft: sidebarOpen ? 288 : 64 }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="sticky top-0 z-10 border-b border-border bg-background/82 backdrop-blur-xl lg:hidden"
-      >
+      <header className="sticky top-0 z-10 border-b border-border bg-background/82 backdrop-blur-xl lg:hidden">
         <div className="flex h-16 items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-2 lg:hidden">
             <Sparkles className="size-5 text-primary" />
@@ -180,17 +175,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <ThemeToggle />
           </div>
         </div>
-      </m.header>
+      </header>
 
       <m.main
         key={pathname}
         initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0, marginLeft: sidebarOpen ? 288 : 64 }}
-        transition={{ 
-          opacity: { duration: 0.2 },
-          y: { duration: 0.2 },
-          marginLeft: { type: "spring", stiffness: 300, damping: 30 }
-        }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ opacity: { duration: 0.2 }, y: { duration: 0.2 } }}
+        className={cn(
+          "transition-[padding] duration-300 ease-out",
+          sidebarOpen ? "lg:pl-[288px]" : "lg:pl-[64px]"
+        )}
       >
         {children}
       </m.main>
