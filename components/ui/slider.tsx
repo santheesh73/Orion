@@ -6,7 +6,7 @@ export const Slider = forwardRef<HTMLInputElement, Omit<InputHTMLAttributes<HTML
     <input
       ref={ref}
       type="range"
-      className={cn("h-2 w-full cursor-pointer accent-primary disabled:cursor-not-allowed disabled:opacity-60", className)}
+      className={cn("h-2 w-full cursor-pointer accent-primary transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60", className)}
       {...props}
     />
   )

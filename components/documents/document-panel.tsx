@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type ClipboardEvent, type DragEvent } from "react";
-import { motion } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
 
 const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false, loading: () => <span>Loading preview...</span> });
@@ -147,11 +147,15 @@ export function DocumentPanel() {
   return (
     <div className="min-h-[calc(100vh-4rem)] px-4 pb-20 pt-5 sm:px-6 lg:pb-8">
       <div className="mx-auto flex max-w-7xl flex-col gap-4">
-        <section
-          className={cn(
-            "rounded-lg border border-dashed bg-card p-4 shadow-soft transition sm:p-5",
-            isDragging ? "border-primary bg-primary/5" : "border-border"
-          )}
+        <m.section
+          animate={{ 
+            borderColor: isDragging ? "hsl(var(--primary))" : "hsl(var(--border))",
+            backgroundColor: isDragging ? "hsl(var(--primary) / 0.05)" : "hsl(var(--card))",
+            scale: isDragging ? 1.01 : 1,
+            boxShadow: isDragging ? "0 0 30px hsl(var(--primary) / 0.15)" : "var(--shadow-soft)"
+          }}
+          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          className="rounded-lg border-2 border-dashed p-4 sm:p-5"
           onDragOver={(event) => {
             event.preventDefault();
             setIsDragging(true);
@@ -164,9 +168,10 @@ export function DocumentPanel() {
         >
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-4">
-              <motion.div
-                className="grid size-12 shrink-0 place-items-center rounded-md bg-primary text-primary-foreground"
-                animate={{ scale: isDragging ? 1.06 : 1 }}
+              <m.div
+                className="grid size-12 shrink-0 place-items-center rounded-md bg-primary text-primary-foreground shadow-sm"
+                animate={{ scale: isDragging ? 1.1 : 1, rotate: isDragging ? 5 : 0 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
                 <Upload className="size-5" />
               </motion.div>
@@ -199,19 +204,29 @@ export function DocumentPanel() {
             </div>
           </div>
           {Object.entries(processing).length > 0 ? (
-            <div className="mt-4 grid gap-2 md:grid-cols-2">
-              {Object.entries(processing).map(([id, item]) => (
-                <div key={id} className="rounded-md border border-border bg-background p-3">
-                  <div className="mb-2 flex items-center justify-between gap-3 text-xs">
-                    <span className="truncate text-muted-foreground">{item.message}</span>
-                    <span className="font-medium">{item.progress}%</span>
-                  </div>
-                  <Progress value={item.progress} />
-                </div>
-              ))}
-            </div>
+            <m.div layout className="mt-4 grid gap-2 md:grid-cols-2">
+              <AnimatePresence>
+                {Object.entries(processing).map(([id, item]) => (
+                  <m.div 
+                    key={id} 
+                    layout 
+                    initial={{ opacity: 0, y: 10, scale: 0.98 }} 
+                    animate={{ opacity: 1, y: 0, scale: 1 }} 
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    className="rounded-md border border-border bg-background p-3 shadow-sm"
+                  >
+                    <div className="mb-2 flex items-center justify-between gap-3 text-xs">
+                      <span className="truncate text-muted-foreground">{item.message}</span>
+                      <span className="font-medium">{item.progress}%</span>
+                    </div>
+                    <Progress value={item.progress} />
+                  </m.div>
+                ))}
+              </AnimatePresence>
+            </m.div>
           ) : null}
-        </section>
+        </m.section>
 
         <div className="grid gap-4 xl:grid-cols-[340px_minmax(0,1fr)]">
           <aside className="rounded-lg border border-border bg-card shadow-soft">
@@ -247,19 +262,21 @@ export function DocumentPanel() {
             </div>
             <div className="max-h-[760px] overflow-y-auto p-2 scrollbar-subtle">
               {loading ? <p className="p-4 text-sm text-muted-foreground">Loading local documents...</p> : null}
-              {filteredDocuments.map((document) => (
-                <DocumentRow
-                  key={document.id}
-                  document={document}
-                  active={activeDocument?.id === document.id}
-                  selected={selectedDocumentIds.includes(document.id)}
-                  onOpen={() => setActiveDocumentId(document.id)}
-                  onSelect={() => toggleSelected(document.id)}
-                  onFavorite={() => void setFavorite(document, !document.favorite)}
-                  onPin={() => void setPinned(document, !document.pinned)}
-                  onDelete={() => void deleteDocument(document.id)}
-                />
-              ))}
+              <AnimatePresence mode="popLayout">
+                {filteredDocuments.map((document) => (
+                  <DocumentRow
+                    key={document.id}
+                    document={document}
+                    active={activeDocument?.id === document.id}
+                    selected={selectedDocumentIds.includes(document.id)}
+                    onOpen={() => setActiveDocumentId(document.id)}
+                    onSelect={() => toggleSelected(document.id)}
+                    onFavorite={() => void setFavorite(document, !document.favorite)}
+                    onPin={() => void setPinned(document, !document.pinned)}
+                    onDelete={() => void deleteDocument(document.id)}
+                  />
+                ))}
+              </AnimatePresence>
               {!loading && filteredDocuments.length === 0 ? (
                 <div className="p-6 text-center text-sm text-muted-foreground">No local documents match this view.</div>
               ) : null}
@@ -420,7 +437,16 @@ function DocumentRow({
 }) {
   const Icon = iconFor(document.kind);
   return (
-    <motion.div layout className={cn("mb-2 rounded-md border p-3 transition", active ? "border-primary bg-primary/5" : "border-border bg-background")}>
+    <m.div 
+      layout
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+      whileHover={{ scale: 1.01, y: -2, boxShadow: "0 4px 12px rgba(0,0,0,0.05)" }}
+      whileTap={{ scale: 0.99 }}
+      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+      className={cn("mb-2 rounded-md border p-3 transition-colors", active ? "border-primary bg-primary/5 shadow-sm" : "border-border bg-background")}
+    >
       <div className="flex items-start gap-3">
         <Checkbox checked={selected} onChange={onSelect} aria-label={`Select ${document.name}`} />
         <button type="button" className="min-w-0 flex-1 text-left" onClick={onOpen}>
@@ -446,7 +472,7 @@ function DocumentRow({
           </Button>
         </div>
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 

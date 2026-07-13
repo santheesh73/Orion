@@ -2,8 +2,14 @@
 
 import { MoreHorizontal, Pin, Star, MessageSquare } from "lucide-react";
 import type { MouseEvent } from "react";
+import { m } from "framer-motion";
 import type { Conversation } from "@/features/chat/types/chat-ui";
 import { cn } from "@/lib/utils/cn";
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -10 },
+  show: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 400, damping: 30 } }
+};
 
 export function ConversationItem({
   conversation,
@@ -19,10 +25,17 @@ export function ConversationItem({
   onContextMenu: (event: MouseEvent<HTMLButtonElement>, conversation: Conversation) => void;
 }) {
   return (
-    <button
+    <m.button
+      layout
+      variants={itemVariants}
+      initial="hidden"
+      animate="show"
+      exit={{ opacity: 0, scale: 0.95 }}
+      whileHover={{ scale: 1.01, backgroundColor: "var(--hover)" }}
+      whileTap={{ scale: 0.98 }}
       type="button"
       className={cn(
-        "group flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left transition hover:bg-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus",
+        "group flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus",
         active && "bg-secondary text-foreground",
         collapsed && "justify-center px-2"
       )}
@@ -59,6 +72,6 @@ export function ConversationItem({
           </div>
         </>
       ) : null}
-    </button>
+    </m.button>
   );
 }

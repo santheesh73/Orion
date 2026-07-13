@@ -1,7 +1,7 @@
 "use client";
 
 import { memo } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import dynamic from "next/dynamic";
 import { AlertTriangle, Bot, Info, UserRound, Sparkles, Loader2 } from "lucide-react";
 const MarkdownRenderer = dynamic(
@@ -39,32 +39,37 @@ export const MessageBubble = memo(function MessageBubble({
   const isUser = message.role === "user";
 
   return (
-    <motion.article
+    <m.article
       layout
-      initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
+      initial={{ opacity: 0, x: isUser ? 20 : -20, filter: "blur(8px)" }}
+      animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+      exit={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
       transition={{ type: "spring", stiffness: 350, damping: 28, mass: 0.8 }}
       className={cn("group flex gap-4 w-full", isUser && "flex-row-reverse")}
     >
       {!isUser && (
-        <div className="mt-1 flex size-8 shrink-0 select-none items-center justify-center rounded-full bg-foreground text-background">
-          <Sparkles className="size-4" />
+        <div className="mt-1 flex size-8 shrink-0 select-none items-center justify-center rounded-full bg-foreground text-background shadow-sm">
+          <Sparkles className="size-4 text-background" />
         </div>
       )}
       <div className={cn("relative flex max-w-[80%] flex-col", isUser ? "items-end" : "min-w-0 flex-1")}>
         <div className={cn(isUser ? "rounded-3xl bg-secondary px-5 py-3 text-foreground" : "py-1")}>
           {!isUser && (
             <div className="mb-2 flex items-center justify-between">
-              <p className="font-semibold text-foreground">{message.author}</p>
+              <p className="font-semibold text-foreground tracking-tight">{message.author}</p>
             </div>
           )}
           
           {message.imageUrl ? (
-            <div className="mb-4 aspect-video overflow-hidden rounded-xl border border-border/50 bg-secondary">
+            <m.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.1 }}
+              className="mb-4 aspect-video overflow-hidden rounded-xl border border-border/50 bg-secondary"
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={message.imageUrl} alt="" className="size-full object-cover" />
-            </div>
+            </m.div>
           ) : null}
           
           <div className="prose-sm sm:prose-base dark:prose-invert" aria-live={isStreaming ? "polite" : "off"}>
@@ -72,10 +77,10 @@ export const MessageBubble = memo(function MessageBubble({
           </div>
         </div>
 
-        <div className={cn("flex opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100", isUser ? "mt-1 justify-end pr-2" : "mt-2")}>
+        <div className={cn("flex opacity-0 transition-opacity duration-300 group-focus-within:opacity-100 group-hover:opacity-100", isUser ? "mt-1 justify-end pr-2" : "mt-2")}>
           <MessageToolbar content={message.content} onDelete={() => onDelete(message.id)} isUser={isUser} />
         </div>
       </div>
-    </motion.article>
+    </m.article>
   );
 });
