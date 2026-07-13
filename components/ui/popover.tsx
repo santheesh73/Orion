@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
 
@@ -37,7 +37,7 @@ export function Popover({ trigger, children, className }: { trigger: ReactNode; 
       </span>
       <AnimatePresence>
         {open ? (
-          <motion.div
+          <m.div
             role="dialog"
             className={cn("absolute right-0 top-full z-40 mt-2 w-72 rounded-lg border border-border bg-popover p-4 text-popover-foreground shadow-floating-panel", className)}
             initial={{ opacity: 0, y: 6, scale: 0.98 }}
@@ -46,7 +46,7 @@ export function Popover({ trigger, children, className }: { trigger: ReactNode; 
             transition={{ duration: 0.14 }}
           >
             {children}
-          </motion.div>
+          </m.div>
         ) : null}
       </AnimatePresence>
     </div>

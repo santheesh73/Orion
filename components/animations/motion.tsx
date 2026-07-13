@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type HTMLMotionProps, type Variants } from "framer-motion";
+import { m, type HTMLMotionProps, type Variants } from "framer-motion";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
 
@@ -49,17 +49,17 @@ export const pressMotion = { scale: 0.985, transition: { duration: 0.08 } };
 
 export function MotionFade({ children, className, ...props }: HTMLMotionProps<"div"> & { children: ReactNode }) {
   return (
-    <motion.div initial="hidden" animate="visible" variants={fadeIn} className={cn(className)} {...props}>
+    <m.div initial="hidden" animate="visible" variants={fadeIn} className={cn(className)} {...props}>
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
 export function MotionPage({ children, className, ...props }: HTMLMotionProps<"main"> & { children: ReactNode }) {
   return (
-    <motion.main initial="hidden" animate="visible" exit="exit" variants={pageTransition} className={cn(className)} {...props}>
+    <m.main initial="hidden" animate="visible" exit="exit" variants={pageTransition} className={cn(className)} {...props}>
       {children}
-    </motion.main>
+    </m.main>
   );
 }
 
@@ -67,7 +67,7 @@ export function TypingDots({ className }: { className?: string }) {
   return (
     <span className={cn("inline-flex items-center gap-1", className)} aria-label="Typing">
       {[0, 1, 2].map((index) => (
-        <motion.span
+        <m.span
           key={index}
           className="size-1.5 rounded-full bg-muted-foreground"
           animate={{ opacity: [0.35, 1, 0.35], y: [0, -2, 0] }}

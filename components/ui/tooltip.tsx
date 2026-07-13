@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { useId, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
 
@@ -13,7 +13,7 @@ export function Tooltip({ children, content, side = "top" }: { children: ReactNo
       <span aria-describedby={id} className="contents">{children}</span>
       <AnimatePresence>
         {open ? (
-          <motion.span
+          <m.span
             id={id}
             role="tooltip"
             className={cn(
@@ -29,7 +29,7 @@ export function Tooltip({ children, content, side = "top" }: { children: ReactNo
             transition={{ duration: 0.12 }}
           >
             {content}
-          </motion.span>
+          </m.span>
         ) : null}
       </AnimatePresence>
     </span>

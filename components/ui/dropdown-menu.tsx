@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils/cn";
 
@@ -49,7 +49,7 @@ export function DropdownMenu({
       </span>
       <AnimatePresence>
         {open ? (
-          <motion.div
+          <m.div
             role="menu"
             className={cn(
               "absolute z-40 min-w-48 rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-floating-panel",
@@ -62,7 +62,7 @@ export function DropdownMenu({
             transition={{ duration: 0.14 }}
           >
             {children}
-          </motion.div>
+          </m.div>
         ) : null}
       </AnimatePresence>
     </div>

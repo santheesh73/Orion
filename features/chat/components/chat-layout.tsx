@@ -2,7 +2,7 @@
 
 import type { MouseEvent } from "react";
 import { useEffect, useMemo, useState, useRef } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useLiveQuery } from "dexie-react-hooks";
@@ -278,7 +278,7 @@ export function ChatLayout() {
         onContextMenu={openContextMenu}
       />
 
-      <motion.section layout className="flex min-w-0 flex-1 flex-col">
+      <m.section layout className="flex min-w-0 flex-1 flex-col">
         <ChatHeader
           conversation={activeConversation}
           modelName={model.name}
@@ -315,7 +315,7 @@ export function ChatLayout() {
             />
           </div>
         </div>
-      </motion.section>
+      </m.section>
 
       <ConversationContextMenu
         conversation={contextMenu?.conversation ?? null}

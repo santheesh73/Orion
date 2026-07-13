@@ -174,7 +174,7 @@ export function DocumentPanel() {
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
                 <Upload className="size-5" />
-              </motion.div>
+              </m.div>
               <div>
                 <h1 className="text-heading-4">Local Document Intelligence</h1>
                 <p className="mt-1 max-w-2xl text-sm leading-6 text-muted-foreground">

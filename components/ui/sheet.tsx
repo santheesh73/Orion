@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { X } from "lucide-react";
 import { useEffect, type ReactNode } from "react";
 import { createPortal } from "react-dom";
@@ -57,8 +57,8 @@ export function Sheet({
   return createPortal(
     <AnimatePresence>
       {open ? (
-        <motion.div className="fixed inset-0 z-50 bg-black/35 backdrop-blur-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          <motion.aside
+        <m.div className="fixed inset-0 z-50 bg-black/35 backdrop-blur-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <m.aside
             role="dialog"
             aria-modal="true"
             aria-label={title}
@@ -75,8 +75,8 @@ export function Sheet({
               </Button>
             </div>
             <div className="mt-5">{children}</div>
-          </motion.aside>
-        </motion.div>
+          </m.aside>
+        </m.div>
       ) : null}
     </AnimatePresence>,
     document.body

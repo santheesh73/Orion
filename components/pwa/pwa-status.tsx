@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Download, RefreshCw, Wifi, WifiOff, X } from "lucide-react";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
@@ -35,7 +35,7 @@ export function PWAStatus() {
         </Button>
       ) : null}
       {showInstall ? (
-        <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-1 rounded-md border border-border bg-card p-1 shadow-soft">
+        <m.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-1 rounded-md border border-border bg-card p-1 shadow-soft">
           <Button
             type="button"
             size="sm"
@@ -52,7 +52,7 @@ export function PWAStatus() {
           <Button type="button" variant="ghost" size="icon" onClick={() => setDismissed(true)} aria-label="Dismiss install banner">
             <X />
           </Button>
-        </motion.div>
+        </m.div>
       ) : null}
     </div>
   );

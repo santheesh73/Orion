@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type ChangeEvent, type ComponentType } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useTheme as useNextTheme } from "next-themes";
 import {
   Accessibility,
@@ -178,7 +178,7 @@ export default function SettingsPage() {
             </div>
           </aside>
 
-          <motion.main
+          <m.main
             key={active}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -198,7 +198,7 @@ export default function SettingsPage() {
             {!loading && active === "pwa" ? <PWAPanel /> : null}
             {!loading && active === "personalization" ? <PersonalizationPanel settings={settings} update={update} /> : null}
             {!loading && active === "about" ? <AboutPanel /> : null}
-          </motion.main>
+          </m.main>
         </div>
       </div>
     </div>

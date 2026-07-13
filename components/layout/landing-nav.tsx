@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Logo } from "@/components/common/logo";
@@ -52,7 +52,7 @@ export function LandingNav() {
 
       <AnimatePresence>
         {open ? (
-          <motion.div
+          <m.div
             className="fixed inset-0 z-50 bg-background/96 p-4 backdrop-blur-xl lg:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -90,7 +90,7 @@ export function LandingNav() {
                 Launch Orion
               </Link>
             </nav>
-          </motion.div>
+          </m.div>
         ) : null}
       </AnimatePresence>
     </header>

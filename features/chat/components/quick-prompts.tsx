@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { FileText, Languages, Lightbulb, ListChecks, PencilRuler, Sparkles } from "lucide-react";
 import type { QuickPrompt } from "@/features/chat/types/chat-ui";
 
@@ -18,7 +18,7 @@ export function QuickPrompts({
       {prompts.map((prompt, index) => {
         const Icon = icons[index % icons.length];
         return (
-          <motion.button
+          <m.button
             key={prompt.title}
             type="button"
             whileHover={{ y: -3 }}
@@ -29,7 +29,7 @@ export function QuickPrompts({
             <Icon className="size-5 text-primary" />
             <span className="mt-3 block text-sm font-semibold">{prompt.title}</span>
             <span className="mt-1 block text-caption leading-5 text-muted-foreground">{prompt.description}</span>
-          </motion.button>
+          </m.button>
         );
       })}
     </div>
