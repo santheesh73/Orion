@@ -7,7 +7,7 @@ import { DropdownMenu, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Tooltip } from "@/components/ui/tooltip";
 import { useMounted } from "@/hooks/use-mounted";
 
-export function ThemeToggle({ side = "bottom" }: { side?: "top" | "bottom" }) {
+export function ThemeToggle({ side = "bottom", align = "end" }: { side?: "top" | "bottom"; align?: "start" | "end" }) {
   const { setTheme, resolvedTheme } = useTheme();
   const mounted = useMounted();
   const Icon = mounted && resolvedTheme === "dark" ? Moon : Sun;
@@ -15,6 +15,7 @@ export function ThemeToggle({ side = "bottom" }: { side?: "top" | "bottom" }) {
   return (
     <DropdownMenu
       side={side}
+      align={align}
       trigger={
         <Tooltip content="Theme" side={side === "top" ? "top" : "bottom"}>
           <Button aria-label="Change theme" variant="ghost" size="icon">

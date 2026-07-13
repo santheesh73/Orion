@@ -1,4 +1,4 @@
-export type MessageRole = "system" | "user" | "assistant";
+export type MessageRole = "system" | "user" | "assistant" | "error";
 
 export interface ChatMessage {
   id: string;
@@ -51,7 +51,8 @@ export type DocumentKind =
   | "yaml"
   | "xml"
   | "sql"
-  | "log";
+  | "log"
+  | "image";
 
 export type DocumentProcessingStatus = "queued" | "validating" | "parsing" | "chunking" | "indexing" | "ready" | "error";
 

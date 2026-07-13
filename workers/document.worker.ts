@@ -15,7 +15,7 @@ const scope = self as DedicatedWorkerGlobalScope;
 const post = (message: WorkerOutbound) => scope.postMessage(message);
 
 function normalizeText(value: string) {
-  return value.replace(/\r\n?/g, "\n").replace(/\u0000/g, "").replace(/[ \t]+\n/g, "\n").trim();
+  return value.replace(/\r\n?|\u0000|[ \t]+(?=\n)/g, (match) => (match === "\u0000" ? "" : "\n")).trim();
 }
 
 function words(text: string) {
@@ -107,8 +107,8 @@ function search(query: string, chunks: OrionDocumentChunk[], documents: OrionDoc
       const keywordHits = terms.filter((term) => chunk.normalizedContent.includes(term));
       const keywordScore = keywordHits.length / Math.max(terms.length, 1);
       const semanticScore = cosine(queryVector, chunk.embeddingVector);
-      const score = Number((keywordScore * 0.64 + semanticScore * 0.36).toFixed(4));
-      if (score < 0.08 && keywordHits.length === 0) {
+      const score = Number((keywordScore * 0.4 + semanticScore * 0.6).toFixed(4));
+      if (score < 0.15 && keywordHits.length === 0) {
         return null;
       }
       const document = documentMap.get(chunk.documentId);

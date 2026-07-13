@@ -3,6 +3,7 @@
 import { FormEvent, KeyboardEvent, useEffect, useRef } from "react";
 import { ArrowUp, Plus, Square } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useUpload } from "@/hooks/useUpload";
 
 import { cn } from "@/lib/utils/cn";
 
@@ -34,6 +35,8 @@ export function PromptInput({
   onContinue?: () => void;
 }) {
   const ref = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { uploadFiles, isUploading } = useUpload();
   const trimmed = value.trim();
   const approximateTokens = Math.ceil(trimmed.length / 4);
 
@@ -65,7 +68,7 @@ export function PromptInput({
       return;
     }
 
-    if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+    if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       submit();
     }
@@ -73,9 +76,10 @@ export function PromptInput({
 
   return (
     <div className="relative mx-auto w-full max-w-3xl px-4 pb-6">
+      <input ref={fileInputRef} type="file" multiple className="sr-only" onChange={(e) => { if (e.target.files) void uploadFiles(e.target.files); }} />
       <form onSubmit={submit} className="relative flex items-end overflow-hidden rounded-[26px] bg-secondary/60 focus-within:bg-secondary/80 transition-colors">
-        <Button aria-label="Attach" type="button" variant="ghost" size="icon" className="mb-2 ml-2 h-10 w-10 shrink-0 rounded-full text-foreground hover:bg-background/50">
-          <Plus className="size-5" />
+        <Button onClick={() => fileInputRef.current?.click()} aria-label="Attach" type="button" variant="ghost" size="icon" className={cn("mb-2 ml-2 h-10 w-10 shrink-0 rounded-full text-foreground hover:bg-background/50 transition-all", isUploading && "opacity-50 pointer-events-none")}>
+          <Plus className={cn("size-5", isUploading && "animate-spin")} />
         </Button>
         <textarea
           ref={ref}
@@ -84,7 +88,7 @@ export function PromptInput({
           onKeyDown={onKeyDown}
           placeholder="Message Orion..."
           rows={1}
-          className="max-h-52 min-h-[56px] w-full resize-none bg-transparent px-2 py-4 text-base outline-none placeholder:text-muted-foreground/80 scrollbar-subtle"
+          className="max-h-52 min-h-[56px] w-full resize-none bg-transparent px-2 py-4 text-base outline-none focus-visible:!outline-none placeholder:text-muted-foreground/80 scrollbar-subtle"
           aria-label="Message Orion"
         />
         <div className="mb-2 mr-2 flex shrink-0 items-center">

@@ -1,14 +1,17 @@
 "use client";
 
 import type { MouseEvent } from "react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "@/lib/db/orion-db";
+import { ensureChat, addMessage, renameChat, deleteChat, cleanupEmptyChats } from "@/features/chat/chat-service";
 import { ChatHeader } from "@/features/chat/components/chat-header";
 import { ChatCommandPalette } from "@/features/chat/components/command-palette";
 import { ConversationContextMenu } from "@/features/chat/components/context-menu";
-import { conversations as seedConversations, initialMessages, quickPrompts } from "@/features/chat/components/chat-data";
+import { quickPrompts } from "@/features/chat/components/chat-data";
 import {
   ConversationInfoDialog,
   DeleteConversationDialog,
@@ -23,15 +26,13 @@ import { ChatSidebar } from "@/features/chat/components/sidebar";
 
 import type { ChatUiMessage, Conversation } from "@/features/chat/types/chat-ui";
 import { useAI } from "@/hooks/useAI";
-import type { PromptMessage } from "@/types/orion";
+import { cn } from "@/lib/utils/cn";
 
 type DialogName = "rename" | "delete" | "export" | "folder" | "info" | "settings" | null;
 
 export function ChatLayout() {
   const router = useRouter();
-  const [conversations, setConversations] = useState(seedConversations);
-  const [activeId, setActiveId] = useState(seedConversations[0]?.id ?? "");
-  const [messages, setMessages] = useState<ChatUiMessage[]>(initialMessages);
+  const [activeId, setActiveId] = useState("");
   const [draft, setDraft] = useState("");
   const [search, setSearch] = useState("");
   const [collapsed, setCollapsed] = useState(false);
@@ -39,35 +40,81 @@ export function ChatLayout() {
   const [dialog, setDialog] = useState<DialogName>(null);
   const [commandOpen, setCommandOpen] = useState(false);
   const [contextMenu, setContextMenu] = useState<{ conversation: Conversation; x: number; y: number } | null>(null);
+
   const { generate, generation, stopGeneration, model, runtime, modelProgress } = useAI();
 
+  const rawConversations = useLiveQuery(() => db.conversations.filter(c => !c.deleted).sortBy("updatedAt")) || [];
+  
+  const conversations = useMemo(() => {
+    return rawConversations.map(c => ({
+      id: c.id,
+      title: c.title,
+      preview: c.lastMessagePreview || "Ready for local AI",
+      updatedAt: new Intl.DateTimeFormat("en", { dateStyle: "short" }).format(new Date(c.updatedAt)),
+      group: "Today" as const, 
+      messageCount: c.messageCount ?? 0,
+      pinned: c.pinned,
+      favorite: c.favorite
+    })).reverse();
+  }, [rawConversations]);
+
   const activeConversation = conversations.find((conversation) => conversation.id === activeId);
-  const loading = generation.status === "validating" || generation.status === "streaming" || generation.status === "stopping";
-  const modelReady = runtime.loadedModelId === model.id && modelProgress.status === "ready";
+
+  useEffect(() => {
+    if (!activeId && conversations.length > 0) {
+      setActiveId(conversations[0].id);
+    } else if (!activeId && rawConversations.length === 0 && rawConversations !== undefined) {
+      ensureChat().then(chat => setActiveId(chat.id));
+    }
+  }, [conversations, activeId, rawConversations]);
+
+  useEffect(() => {
+    if (activeId) {
+      cleanupEmptyChats(activeId).catch(console.error);
+    }
+  }, [activeId]);
+
+  const rawMessages = useLiveQuery(async () => {
+    if (!activeId) return [];
+    return await db.messages.where("chatId").equals(activeId).sortBy("createdAt");
+  }, [activeId]) || [];
+
+  const [activeStreamMessage, setActiveStreamMessage] = useState<ChatUiMessage | null>(null);
+  const streamContentRef = useRef("");
+
+  const messages = useMemo(() => {
+    const list = rawMessages.map(m => ({
+      id: m.id,
+      role: m.role === "error" ? "error" : (m.role as "user" | "assistant"),
+      author: m.role === "user" ? "You" : "Orion",
+      createdAt: new Intl.DateTimeFormat("en", { hour: "numeric", minute: "2-digit" }).format(new Date(m.createdAt)),
+      content: m.content
+    } as ChatUiMessage));
+    
+    if (activeStreamMessage) {
+      list.push(activeStreamMessage);
+    }
+    return list;
+  }, [rawMessages, activeStreamMessage]);
 
   const filteredConversations = useMemo(() => {
     const needle = search.trim().toLowerCase();
-    if (!needle) {
-      return conversations;
-    }
-    return conversations.filter((conversation) => {
+    
+    // Hide empty placeholder conversations unless it's currently active
+    const valid = conversations.filter(c => c.id === activeId || c.messageCount > 0 || c.title !== "New conversation");
+
+    if (!needle) return valid;
+    return valid.filter((conversation) => {
       return conversation.title.toLowerCase().includes(needle) || conversation.preview.toLowerCase().includes(needle);
     });
-  }, [conversations, search]);
+  }, [conversations, search, activeId]);
 
-  function newChat() {
-    const now = new Date();
-    const conversation: Conversation = {
-      id: `conv-${now.getTime()}`,
-      title: "Untitled conversation",
-      preview: "Ready for local AI",
-      updatedAt: "Now",
-      group: "Today",
-      messageCount: 0
-    };
-    setConversations((current) => [conversation, ...current]);
-    setActiveId(conversation.id);
-    setMessages([]);
+  const loading = generation.status === "validating" || generation.status === "streaming" || generation.status === "stopping";
+  const modelReady = runtime.loadedModelId === model.id && modelProgress.status === "ready";
+
+  async function newChat() {
+    const chat = await ensureChat();
+    setActiveId(chat.id);
     setDraft("");
     setMobileOpen(false);
   }
@@ -75,80 +122,46 @@ export function ChatLayout() {
   function selectConversation(id: string) {
     setActiveId(id);
     setMobileOpen(false);
-    setMessages(id === seedConversations[0]?.id ? initialMessages : []);
   }
 
-  function messageHistory(source: ChatUiMessage[]) {
-    return source
-      .filter((message) => message.role === "user" || message.role === "assistant")
-      .map<PromptMessage>((message) => ({ role: message.role as "user" | "assistant", content: message.content }));
-  }
-
-  function appendAssistantStream(assistantId: string, token: string) {
-    setMessages((current) =>
-      current.map((message) =>
-        message.id === assistantId
-          ? {
-              ...message,
-              content: `${message.content}${token}`
-            }
-          : message
-      )
-    );
-  }
-
-  function completeAssistantStream(assistantId: string) {
-    setMessages((current) =>
-      current.map((message) =>
-        message.id === assistantId
-          ? {
-              ...message,
-              content: message.content.trim() || "Generation stopped before Orion produced a response."
-            }
-          : message
-      )
-    );
-  }
-
-  function showAssistantError(assistantId: string, message: string) {
-    setMessages((current) =>
-      current.map((item) =>
-        item.id === assistantId
-          ? {
-              ...item,
-              role: "error",
-              author: "Runtime",
-              content: message
-            }
-          : item
-      )
-    );
-  }
-
-  function runLocalGeneration(content: string, sourceMessages: ChatUiMessage[]) {
+  function runLocalGeneration(content: string, sourceMessages: ChatUiMessage[], chatId: string) {
     const assistantId = `msg-${Date.now()}-assistant`;
-    const assistantMessage: ChatUiMessage = {
+    streamContentRef.current = "";
+    
+    setActiveStreamMessage({
       id: assistantId,
       role: "assistant",
       author: "Orion",
       createdAt: new Intl.DateTimeFormat("en", { hour: "numeric", minute: "2-digit" }).format(new Date()),
       content: ""
-    };
-    setMessages((current) => [...current, assistantMessage]);
+    });
+
     generate({
-      history: messageHistory(sourceMessages),
+      history: sourceMessages.filter(m => m.role === "user" || m.role === "assistant").map(m => ({ role: m.role as "user" | "assistant", content: m.content })),
       prompt: content,
-      onToken: (token) => appendAssistantStream(assistantId, token),
-      onDone: () => completeAssistantStream(assistantId),
-      onError: (message) => showAssistantError(assistantId, message)
+      onToken: (token) => {
+        streamContentRef.current += token;
+        setActiveStreamMessage(prev => prev ? { ...prev, content: streamContentRef.current } : null);
+      },
+      onDone: () => {
+        const finalContent = streamContentRef.current;
+        addMessage(chatId, "assistant", finalContent.trim() || "Generation stopped before Orion produced a response.").catch(console.error);
+        setActiveStreamMessage(null);
+      },
+      onError: (message) => {
+        addMessage(chatId, "error", message).catch(console.error);
+        setActiveStreamMessage(null);
+      }
     });
   }
 
-  function sendMessage(overridePrompt?: string) {
+  const isSendingRef = useRef(false);
+
+  async function sendMessage(overridePrompt?: string) {
+    if (isSendingRef.current) return;
+    
     const content = (overridePrompt ?? draft).trim();
-    if (!content) {
-      return;
-    }
+    if (!content || !activeId) return;
 
     if (!modelReady) {
       toast.error("Please load a model.");
@@ -156,32 +169,25 @@ export function ChatLayout() {
       return;
     }
 
-    const message: ChatUiMessage = {
-      id: `msg-${Date.now()}`,
-      role: "user",
-      author: "You",
-      createdAt: new Intl.DateTimeFormat("en", { hour: "numeric", minute: "2-digit" }).format(new Date()),
-      content
-    };
+    isSendingRef.current = true;
+    try {
+      setDraft("");
+      await addMessage(activeId, "user", content);
 
-    const nextMessages = [...messages, message];
-    setMessages(nextMessages);
-    setConversations((current) =>
-      current.map((conversation) =>
-        conversation.id === activeId
-          ? { ...conversation, preview: content, updatedAt: "Now", messageCount: conversation.messageCount + 1 }
-          : conversation
-      )
-    );
-    setDraft("");
-    runLocalGeneration(content, nextMessages);
+      const nextMessages = [...messages, {
+        id: "temp", role: "user", author: "You", content, createdAt: "" 
+      } as ChatUiMessage];
+
+      runLocalGeneration(content, nextMessages, activeId);
+    } finally {
+      isSendingRef.current = false;
+    }
   }
 
   function regenerateResponse() {
     const lastUser = [...messages].reverse().find((message) => message.role === "user");
-    if (!lastUser || loading) {
-      return;
-    }
+    if (!lastUser || loading || !activeId) return;
+    
     let lastAssistantIndex = -1;
     for (let index = messages.length - 1; index >= 0; index -= 1) {
       if (messages[index].role === "assistant" || messages[index].role === "error") {
@@ -190,46 +196,56 @@ export function ChatLayout() {
       }
     }
     const source = lastAssistantIndex >= 0 ? messages.slice(0, lastAssistantIndex) : messages;
-    setMessages(source);
-    runLocalGeneration(lastUser.content, source);
+    
+    if (lastAssistantIndex >= 0) {
+      db.messages.delete(messages[lastAssistantIndex].id).catch(console.error);
+    }
+
+    runLocalGeneration(lastUser.content, source, activeId);
   }
 
   function continueResponse() {
-    if (loading) {
-      return;
-    }
+    if (loading || !activeId) return;
     const hasAssistant = messages.some((message) => message.role === "assistant");
     if (!hasAssistant) {
       toast.info("Start a conversation before continuing a response.");
       return;
     }
-    runLocalGeneration("Continue the previous response without repeating it.", messages);
+    runLocalGeneration("Continue the previous response without repeating it.", messages, activeId);
   }
 
-  function renameConversation(title: string) {
-    setConversations((current) => current.map((conversation) => (conversation.id === activeId ? { ...conversation, title: title.trim() } : conversation)));
+  async function renameConversationAction(title: string) {
+    if (activeId) {
+      await renameChat(activeId, title.trim());
+    }
     setDialog(null);
   }
 
-  function deleteConversation() {
-    setConversations((current) => current.filter((conversation) => conversation.id !== activeId));
-    const next = conversations.find((conversation) => conversation.id !== activeId);
-    setActiveId(next?.id ?? "");
-    setMessages(next?.id === seedConversations[0]?.id ? initialMessages : []);
+  async function deleteConversationAction() {
+    if (activeId) {
+      await deleteChat(activeId);
+      setActiveId("");
+    }
     setDialog(null);
   }
 
-  function deleteMessage(id: string) {
-    setMessages((current) => current.filter((message) => message.id !== id));
+  async function deleteMessageAction(id: string) {
+    await db.messages.delete(id);
   }
 
-  function toggleConversationPin(id: string) {
-    setConversations((current) => current.map((conversation) => (conversation.id === id ? { ...conversation, pinned: !conversation.pinned } : conversation)));
+  async function toggleConversationPin(id: string) {
+    const conv = rawConversations.find(c => c.id === id);
+    if (conv) {
+      await db.conversations.update(id, { pinned: !conv.pinned, updatedAt: Date.now() });
+    }
     setContextMenu(null);
   }
 
-  function toggleConversationFavorite(id: string) {
-    setConversations((current) => current.map((conversation) => (conversation.id === id ? { ...conversation, favorite: !conversation.favorite } : conversation)));
+  async function toggleConversationFavorite(id: string) {
+    const conv = rawConversations.find(c => c.id === id);
+    if (conv) {
+      await db.conversations.update(id, { favorite: !conv.favorite, updatedAt: Date.now() });
+    }
     setContextMenu(null);
   }
 
@@ -277,24 +293,28 @@ export function ChatLayout() {
           onOpenCommand={() => setCommandOpen(true)}
           onNewChat={newChat}
         />
-        <div className="min-h-0 flex-1 overflow-y-auto scroll-smooth scrollbar-subtle">
-          <MessageList messages={messages} prompts={quickPrompts} loading={loading} onDeleteMessage={deleteMessage} onSelectPrompt={setDraft} />
-        </div>
+        <div className={cn("flex min-h-0 flex-1 flex-col", messages.length === 0 ? "justify-center pb-20" : "")}>
+          <div className={cn("w-full scroll-smooth scrollbar-subtle", messages.length === 0 ? "" : "min-h-0 flex-1 overflow-y-auto")}>
+            <MessageList messages={messages} prompts={quickPrompts} loading={loading} onDeleteMessage={deleteMessageAction} onSelectPrompt={setDraft} />
+          </div>
 
-        <PromptInput
-          value={draft}
-          loading={loading}
-          canRegenerate={messages.some((message) => message.role === "user")}
-          canContinue={messages.some((message) => message.role === "assistant")}
-          canSubmit={modelReady}
-          guidance={modelReady ? undefined : "Please load a model."}
-          onChange={setDraft}
-          onSubmit={() => sendMessage()}
-          onClear={() => setDraft("")}
-          onStop={stopGeneration}
-          onRegenerate={regenerateResponse}
-          onContinue={continueResponse}
-        />
+          <div className={cn("w-full shrink-0 transition-all duration-500 ease-in-out", messages.length === 0 ? "mx-auto max-w-4xl" : "")}>
+            <PromptInput
+              value={draft}
+              loading={loading}
+              canRegenerate={messages.some((message) => message.role === "user")}
+              canContinue={messages.some((message) => message.role === "assistant")}
+              canSubmit={modelReady}
+              guidance={modelReady ? undefined : "Please load a model."}
+              onChange={setDraft}
+              onSubmit={() => sendMessage()}
+              onClear={() => setDraft("")}
+              onStop={stopGeneration}
+              onRegenerate={regenerateResponse}
+              onContinue={continueResponse}
+            />
+          </div>
+        </div>
       </motion.section>
 
       <ConversationContextMenu
@@ -319,8 +339,8 @@ export function ChatLayout() {
         onNewChat={newChat}
         onOpenSettings={() => setDialog("settings")}
       />
-      <RenameConversationDialog open={dialog === "rename"} conversation={activeConversation} onOpenChange={(open) => setDialog(open ? "rename" : null)} onRename={renameConversation} />
-      <DeleteConversationDialog open={dialog === "delete"} conversation={activeConversation} onOpenChange={(open) => setDialog(open ? "delete" : null)} onDelete={deleteConversation} />
+      <RenameConversationDialog open={dialog === "rename"} conversation={activeConversation} onOpenChange={(open) => setDialog(open ? "rename" : null)} onRename={renameConversationAction} />
+      <DeleteConversationDialog open={dialog === "delete"} conversation={activeConversation} onOpenChange={(open) => setDialog(open ? "delete" : null)} onDelete={deleteConversationAction} />
       <ExportChatDialog open={dialog === "export"} conversation={activeConversation} onOpenChange={(open) => setDialog(open ? "export" : null)} />
       <NewFolderDialog open={dialog === "folder"} onOpenChange={(open) => setDialog(open ? "folder" : null)} />
       <ConversationInfoDialog open={dialog === "info"} conversation={activeConversation} onOpenChange={(open) => setDialog(open ? "info" : null)} />

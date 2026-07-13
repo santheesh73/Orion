@@ -7,11 +7,17 @@ import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from "@
 export function CommandPalette({
   open,
   onOpenChange,
-  items
+  items,
+  search,
+  onSearchChange,
+  shouldFilter = true
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   items: Array<{ label: string; action: () => void }>;
+  search?: string;
+  onSearchChange?: (value: string) => void;
+  shouldFilter?: boolean;
 }) {
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -27,9 +33,9 @@ export function CommandPalette({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} title="Command palette" className="overflow-hidden border border-border/50 bg-background/80 p-0 shadow-glass backdrop-blur-2xl">
-      <Command className="bg-transparent">
+      <Command className="bg-transparent" shouldFilter={shouldFilter}>
         <div className="border-b border-border/50 px-3 pb-1 pt-3">
-          <CommandInput placeholder="Type a command or search..." className="text-base" />
+          <CommandInput placeholder="Type a command or search..." className="text-base" value={search} onValueChange={onSearchChange} />
         </div>
         <CommandList className="max-h-[350px] overflow-y-auto p-2 scrollbar-subtle">
           <CommandEmpty className="px-3 py-10 text-center text-sm text-muted-foreground">

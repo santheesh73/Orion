@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 
 export default function HomePage() {
   const router = useRouter();
-  const { installedModels, loadModel, download, runtime } = useAI();
+  const { installedModels, loadModel, download } = useAI();
   const [isClient, setIsClient] = useState(false);
   
   useEffect(() => {

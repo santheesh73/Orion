@@ -35,7 +35,7 @@ export function ChatHeader({
   onNewChat: () => void;
 }) {
   return (
-    <header className="flex min-h-16 items-center justify-between gap-3 border-b border-border bg-background/82 px-4 backdrop-blur-xl sm:px-5">
+    <header className="relative z-50 flex min-h-16 items-center justify-between gap-3 border-b border-border bg-background/82 px-4 backdrop-blur-xl sm:px-5">
       <div className="min-w-0 pl-12 lg:pl-0">
         <div className="flex min-w-0 items-center gap-2">
           <h1 className="truncate text-sm font-semibold sm:text-base">{conversation?.title ?? "New conversation"}</h1>
@@ -55,9 +55,7 @@ export function ChatHeader({
       </div>
 
       <div className="flex items-center gap-1">
-        <Button aria-label="New chat" variant="ghost" size="icon" onClick={onNewChat}>
-          <MessageSquarePlus className="size-5" />
-        </Button>
+
         <Button aria-label="Open chat command palette" variant="ghost" size="icon" onClick={onOpenCommand}>
           <Command className="size-5" />
         </Button>

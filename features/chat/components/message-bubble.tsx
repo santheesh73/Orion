@@ -2,8 +2,12 @@
 
 import { memo } from "react";
 import { motion } from "framer-motion";
-import { AlertTriangle, Bot, Info, UserRound, Sparkles } from "lucide-react";
-import { MarkdownRenderer } from "@/features/chat/components/markdown-renderer";
+import dynamic from "next/dynamic";
+import { AlertTriangle, Bot, Info, UserRound, Sparkles, Loader2 } from "lucide-react";
+const MarkdownRenderer = dynamic(
+  () => import("@/features/chat/components/markdown-renderer").then((mod) => mod.MarkdownRenderer),
+  { ssr: false, loading: () => <div className="flex animate-pulse items-center gap-2 py-2 text-sm text-muted-foreground"><Loader2 className="size-4 animate-spin" /> Rendering...</div> }
+);
 import { MessageToolbar } from "@/features/chat/components/message-toolbar";
 import type { ChatUiMessage } from "@/features/chat/types/chat-ui";
 import { cn } from "@/lib/utils/cn";
@@ -24,10 +28,12 @@ const roleIcons = {
 
 export const MessageBubble = memo(function MessageBubble({
   message,
-  onDelete
+  onDelete,
+  isStreaming
 }: {
   message: ChatUiMessage;
   onDelete: (id: string) => void;
+  isStreaming?: boolean;
 }) {
   const Icon = roleIcons[message.role];
   const isUser = message.role === "user";
@@ -35,10 +41,10 @@ export const MessageBubble = memo(function MessageBubble({
   return (
     <motion.article
       layout
-      initial={{ opacity: 0, y: 14, scale: 0.99 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: -8, scale: 0.99 }}
-      transition={{ duration: 0.2 }}
+      initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
+      transition={{ type: "spring", stiffness: 350, damping: 28, mass: 0.8 }}
       className={cn("group flex gap-4 w-full", isUser && "flex-row-reverse")}
     >
       {!isUser && (
@@ -46,30 +52,27 @@ export const MessageBubble = memo(function MessageBubble({
           <Sparkles className="size-4" />
         </div>
       )}
-      <div className={cn(
-        "relative flex max-w-[80%] flex-col", 
-        isUser 
-          ? "rounded-3xl bg-secondary px-5 py-4 text-foreground" 
-          : "min-w-0 flex-1 py-1"
-      )}>
-        {!isUser && (
-          <div className="mb-2 flex items-center justify-between">
-            <p className="font-semibold text-foreground">{message.author}</p>
+      <div className={cn("relative flex max-w-[80%] flex-col", isUser ? "items-end" : "min-w-0 flex-1")}>
+        <div className={cn(isUser ? "rounded-3xl bg-secondary px-5 py-3 text-foreground" : "py-1")}>
+          {!isUser && (
+            <div className="mb-2 flex items-center justify-between">
+              <p className="font-semibold text-foreground">{message.author}</p>
+            </div>
+          )}
+          
+          {message.imageUrl ? (
+            <div className="mb-4 aspect-video overflow-hidden rounded-xl border border-border/50 bg-secondary">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={message.imageUrl} alt="" className="size-full object-cover" />
+            </div>
+          ) : null}
+          
+          <div className="prose-sm sm:prose-base dark:prose-invert" aria-live={isStreaming ? "polite" : "off"}>
+            <MarkdownRenderer content={message.content} isStreaming={isStreaming} />
           </div>
-        )}
-        
-        {message.imageUrl ? (
-          <div className="mb-4 aspect-video overflow-hidden rounded-xl border border-border/50 bg-secondary">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={message.imageUrl} alt="" className="size-full object-cover" />
-          </div>
-        ) : null}
-        
-        <div className="prose-sm sm:prose-base dark:prose-invert">
-          <MarkdownRenderer content={message.content} />
         </div>
 
-        <div className={cn("mt-2 flex opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100", isUser && "justify-end")}>
+        <div className={cn("flex opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100", isUser ? "mt-1 justify-end pr-2" : "mt-2")}>
           <MessageToolbar content={message.content} onDelete={() => onDelete(message.id)} isUser={isUser} />
         </div>
       </div>

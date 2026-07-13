@@ -6,6 +6,7 @@ import type { AppSettings, GenerationSettings } from "@/types/orion";
 
 export const DEFAULT_SETTINGS: AppSettings = {
   id: SETTINGS_ID,
+  adminMode: false,
   theme: "system",
   language: "en",
   temperature: 0.7,

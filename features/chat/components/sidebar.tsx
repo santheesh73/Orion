@@ -101,18 +101,16 @@ function SidebarContent({
 }) {
   return (
     <>
-      <div className={cn("flex items-center gap-2 p-3 pb-2", collapsed && "justify-center")}>
+      <div className={cn("flex gap-2 p-3 pb-2", collapsed ? "flex-col items-center" : "items-center")}>
         <Button aria-label="New chat" variant="ghost" className={cn("flex-1 justify-between px-2 text-foreground font-medium", collapsed && "size-10 flex-none justify-center px-0")} onClick={onNewChat}>
           <div className="flex items-center gap-2">
             {!collapsed ? <span className="flex items-center gap-2"><Sparkles className="size-4" /> New Chat</span> : <MessageSquarePlus className="size-5" />}
           </div>
           {!collapsed && <MessageSquarePlus className="size-4 text-muted-foreground" />}
         </Button>
-        {!collapsed && (
-          <Button aria-label="Collapse sidebar" variant="ghost" size="icon" onClick={onToggleCollapsed} className="shrink-0 text-muted-foreground">
-            <PanelLeftClose className="size-5" />
-          </Button>
-        )}
+        <Button aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"} variant="ghost" size="icon" onClick={onToggleCollapsed} className={cn("shrink-0 text-muted-foreground", collapsed && "size-10")}>
+          {collapsed ? <PanelLeftOpen className="size-5" /> : <PanelLeftClose className="size-5" />}
+        </Button>
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto p-3 scrollbar-subtle">
@@ -135,7 +133,7 @@ function SidebarContent({
               <span className="text-sm font-medium leading-none">Local user</span>
             </div>
           </div>
-          <ThemeToggle side="top" />
+          <ThemeToggle side="top" align={collapsed ? "start" : "end"} />
         </div>
       </div>
     </>

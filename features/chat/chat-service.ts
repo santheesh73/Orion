@@ -9,6 +9,14 @@ export function createId(prefix: string) {
   return `${prefix}_${crypto.randomUUID()}`;
 }
 
+export async function cleanupEmptyChats(activeId: string) {
+  const all = await db.conversations.toArray();
+  const empty = all.filter(c => c.messageCount === 0 && c.title === "New conversation" && c.id !== activeId);
+  if (empty.length > 0) {
+    await db.conversations.bulkDelete(empty.map(c => c.id));
+  }
+}
+
 export async function ensureChat(title = "New conversation") {
   const chat: ChatThread = {
     id: createId("chat"),

@@ -4,9 +4,10 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { CodeBlock } from "@/features/chat/components/code-block";
 
-export function MarkdownRenderer({ content }: { content: string }) {
+export function MarkdownRenderer({ content, isStreaming }: { content: string; isStreaming?: boolean }) {
+  const displayContent = isStreaming ? `${content} ▌` : content;
   return (
-    <div className="prose max-w-none text-sm leading-7 prose-pre:m-0">
+    <div className="prose max-w-none text-sm leading-relaxed prose-pre:m-0 [&>*:first-child]:!mt-0 [&>*:last-child]:!mb-0">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
@@ -41,7 +42,7 @@ export function MarkdownRenderer({ content }: { content: string }) {
           td: ({ children }) => <td className="border-b border-border px-3 py-2 align-top">{children}</td>
         }}
       >
-        {content}
+        {displayContent}
       </ReactMarkdown>
     </div>
   );

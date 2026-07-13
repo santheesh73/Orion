@@ -11,7 +11,6 @@ import { Logo } from "@/components/common/logo";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { PWAStatus } from "@/components/pwa/pwa-status";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
 import { useOrionStore } from "@/store/orion-store";
 import { cn } from "@/lib/utils/cn";
 
@@ -31,7 +30,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [commandOpen, setCommandOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const appSettings = useOrionStore((state) => state.appSettings);
-  const setAppSettings = useOrionStore((state) => state.setAppSettings);
   const adminMode = appSettings?.adminMode ?? false;
 
   useEffect(() => {

@@ -42,7 +42,13 @@ const extensionKind: Record<string, DocumentKind> = {
   yml: "yaml",
   xml: "xml",
   sql: "sql",
-  log: "log"
+  log: "log",
+  png: "image",
+  jpg: "image",
+  jpeg: "image",
+  webp: "image",
+  bmp: "image",
+  gif: "image"
 };
 
 export const supportedExtensions = Object.keys(extensionKind);
@@ -72,6 +78,9 @@ export async function parseDocumentFile(file: File, kind: DocumentKind): Promise
   }
   if (kind === "csv") {
     return parseCsv(file);
+  }
+  if (kind === "image") {
+    return parseImage(file);
   }
   const text = await file.text();
   return documentWorkerClient.parseText({ fileName: file.name, kind, text });
@@ -156,4 +165,25 @@ function toMarkdownTable(rows: string[][]) {
 
 function countWords(text: string) {
   return text.match(/\b[\w'-]+\b/g)?.length ?? 0;
+}
+
+async function parseImage(file: File): Promise<ParsedDocumentContent> {
+  const { ocrClient } = await import("@/services/document/ocr-client");
+  const result = await ocrClient.recognize(file);
+  const content = result.text.trim();
+  const metadata = [
+    `File: ${file.name}`,
+    `Type: ${file.type}`,
+    `Size: ${(file.size / 1024).toFixed(1)} KB`,
+    `Dimensions: ${result.width}x${result.height}`
+  ].join("\n");
+  
+  const fullContent = `[IMAGE METADATA]\n${metadata}\n\n[OCR TEXT EXTRACTION]\n${content}`;
+  
+  return {
+    content: fullContent,
+    previewText: fullContent.slice(0, 3000),
+    wordCount: countWords(fullContent),
+    pageCount: 1
+  };
 }

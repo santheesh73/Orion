@@ -33,8 +33,8 @@ export const MessageList = memo(function MessageList({
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-col gap-5 px-4 py-8">
       <AnimatePresence initial={false}>
-        {messages.map((message) => (
-          <MessageBubble key={message.id} message={message} onDelete={onDeleteMessage} />
+        {messages.map((message, index) => (
+          <MessageBubble key={message.id} message={message} onDelete={onDeleteMessage} isStreaming={loading && index === messages.length - 1} />
         ))}
         {loading ? <TypingIndicator key="typing" /> : null}
       </AnimatePresence>

@@ -2,9 +2,10 @@
 
 import { useEffect, useMemo, useRef, useState, type ClipboardEvent, type DragEvent } from "react";
 import { motion } from "framer-motion";
-import ReactMarkdown from "react-markdown";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import dynamic from "next/dynamic";
+
+const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false, loading: () => <span>Loading preview...</span> });
+const SyntaxHighlighter = dynamic(() => import("react-syntax-highlighter").then((mod) => mod.Prism), { ssr: false });
 import {
   Bot,
   Clock,
@@ -16,6 +17,7 @@ import {
   Folder,
   FolderInput,
   GripVertical,
+  Image as ImageIcon,
   MessageSquareText,
   Pin,
   Search,
@@ -490,12 +492,29 @@ function PreviewPane({
               ))}
             </pre>
           </div>
+        ) : document.kind === "image" ? (
+          <div className="space-y-4">
+            <ImageObject document={document} />
+            <div className="rounded-md border border-border bg-card p-3">
+              <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
+                <Sparkles className="size-3.5" />
+                <span>Visual understanding requires a compatible local vision model. Currently displaying OCR text extraction.</span>
+              </div>
+              <pre className="whitespace-pre-wrap text-sm leading-7">
+                {highlightText(previewText, terms).map((part, index) => (
+                  <mark key={`${part.text}-${index}`} className={part.highlight ? "rounded bg-warning/30 px-0.5 text-foreground" : "bg-transparent text-inherit"}>
+                    {part.text}
+                  </mark>
+                ))}
+              </pre>
+            </div>
+          </div>
         ) : document.kind === "markdown" ? (
           <div className="prose max-w-none text-sm">
             <ReactMarkdown>{previewText}</ReactMarkdown>
           </div>
         ) : codeKinds.has(document.kind) ? (
-          <SyntaxHighlighter language={language} style={atomDark} customStyle={{ margin: 0, borderRadius: 8 }}>
+          <SyntaxHighlighter language={language} customStyle={{ margin: 0, borderRadius: 8 }}>
             {previewText}
           </SyntaxHighlighter>
         ) : (
@@ -533,6 +552,31 @@ function PdfObject({ document }: { document: OrionDocument }) {
     <object data={url} type="application/pdf" className="h-[520px] w-full rounded-md border border-border bg-secondary">
       <iframe src={url} title={document.name} className="h-[520px] w-full rounded-md border-0" />
     </object>
+  );
+}
+
+function ImageObject({ document }: { document: OrionDocument }) {
+  const [url, setUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!document.binary) {
+      setUrl(null);
+      return;
+    }
+    const objectUrl = URL.createObjectURL(document.binary);
+    setUrl(objectUrl);
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [document]);
+
+  if (!url) {
+    return <EmptyInline icon={ImageIcon} text="Image text was extracted locally. The original image preview is unavailable for this imported record." />;
+  }
+
+  return (
+    <div className="flex justify-center rounded-md border border-border bg-secondary p-4">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={url} alt={document.name} className="max-h-[420px] rounded object-contain shadow-soft" />
+    </div>
   );
 }
 
@@ -745,6 +789,9 @@ function iconFor(kind: OrionDocument["kind"]) {
   }
   if (kind === "csv") {
     return FileArchive;
+  }
+  if (kind === "image") {
+    return ImageIcon;
   }
   return FileText;
 }

@@ -18,6 +18,7 @@ export function ConversationList({
   onContextMenu: (event: MouseEvent<HTMLButtonElement>, conversation: Conversation) => void;
 }) {
   if (conversations.length === 0) {
+    if (collapsed) return null;
     return <div className="rounded-lg border border-dashed border-border p-4 text-center text-caption text-muted-foreground">No conversations found.</div>;
   }
 

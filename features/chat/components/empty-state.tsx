@@ -13,9 +13,16 @@ export function EmptyState({
   onSelectPrompt: (prompt: string) => void;
 }) {
   return (
-    <div className="mx-auto grid min-h-full w-full max-w-4xl place-items-center px-4">
-      <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className="w-full text-center">
-        <h1 className="text-3xl font-semibold text-foreground">What can I help with?</h1>
+    <div className="mx-auto flex w-full max-w-4xl flex-col items-center px-4 pt-12 pb-8">
+      <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="w-full text-center">
+        <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+          <Sparkles className="size-8" />
+        </div>
+        <h1 className="mb-2 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">What can I help with?</h1>
+        <p className="mb-10 text-muted-foreground">Orion runs locally on your device. Your data never leaves.</p>
+        <div className="mx-auto max-w-2xl">
+          <QuickPrompts prompts={prompts} onSelect={onSelectPrompt} />
+        </div>
       </motion.div>
     </div>
   );
