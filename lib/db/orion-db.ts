@@ -33,6 +33,9 @@ class OrionDatabase extends Dexie {
   documentChunks!: Table<OrionDocumentChunk, string>;
   documentFolders!: Table<DocumentFolder, string>;
   documentSearchHistory!: Table<DocumentSearchHistory, string>;
+  metadata!: Table<{ id: string; key: string; value: any }, string>;
+  searchIndex!: Table<{ id: string; targetId: string; text: string; type: string }, string>;
+  pinnedChats!: Table<{ id: string; chatId: string; pinnedAt: number }, string>;
 
   constructor() {
     super("orion-local-ai");
@@ -96,6 +99,30 @@ class OrionDatabase extends Dexie {
         "id, documentId, documentName, index, pageNumber, createdAt, [documentId+index], [documentId+pageNumber]",
       documentFolders: "id, name, createdAt, updatedAt",
       documentSearchHistory: "id, query, createdAt"
+    });
+
+    this.version(4).stores({
+      conversations:
+        "id, title, createdAt, updatedAt, pinned, favorite, folderId, modelUsed, deleted, [deleted+updatedAt], [pinned+updatedAt], [favorite+updatedAt]",
+      messages:
+        "id, chatId, role, createdAt, updatedAt, status, deleted, [chatId+createdAt], [chatId+status], [chatId+deleted]",
+      settings: "id, preferredModel, updatedAt",
+      models: "id, name, version, status, backendType, downloadDate, updatedAt",
+      favorites: "id, targetId, targetType, createdAt, [targetType+createdAt]",
+      folders: "id, name, createdAt, updatedAt, deleted",
+      promptTemplates: "id, name, category, favorite, createdAt, updatedAt, [category+favorite]",
+      recentSearches: "id, query, scope, timestamp, frequency, [scope+timestamp]",
+      statistics: "id, conversationId, lastActiveAt",
+      backups: "id, name, createdAt, version",
+      documents:
+        "id, name, kind, mimeType, size, createdAt, updatedAt, modifiedAt, status, favorite, pinned, folderId, lastOpenedAt, [pinned+updatedAt], [favorite+updatedAt], [folderId+updatedAt]",
+      documentChunks:
+        "id, documentId, documentName, index, pageNumber, createdAt, [documentId+index], [documentId+pageNumber]",
+      documentFolders: "id, name, createdAt, updatedAt",
+      documentSearchHistory: "id, query, createdAt",
+      metadata: "id, key",
+      searchIndex: "id, targetId, type",
+      pinnedChats: "id, chatId"
     });
   }
 }

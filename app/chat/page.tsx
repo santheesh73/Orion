@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ChatLayout } from "@/features/chat/components/chat-layout";
+import ChatLayoutDynamic from "@/features/chat/components/chat-layout-client";
 
 export const metadata: Metadata = {
   title: "Chat - Orion",
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function ChatPage() {
-  return <ChatLayout />;
+  return <ChatLayoutDynamic />;
 }

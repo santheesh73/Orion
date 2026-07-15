@@ -2,16 +2,11 @@
 
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/providers/theme-provider";
-import { LazyMotion, domMax, MotionConfig } from "framer-motion";
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider>
-      <LazyMotion features={domMax} strict>
-        <MotionConfig reducedMotion="user">
-          {children}
-        </MotionConfig>
-      </LazyMotion>
+      {children}
       <Toaster 
         position="top-center" 
         toastOptions={{

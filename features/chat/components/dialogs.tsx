@@ -52,10 +52,16 @@ export function DeleteConversationDialog({
   onDelete: () => void;
 }) {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange} title="Delete conversation" description={`Delete "${conversation?.title ?? "this conversation"}" from local history?`}>
-      <div className="flex justify-end gap-2">
-        <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-        <Button variant="destructive" onClick={onDelete}>Delete</Button>
+    <Dialog open={open} onOpenChange={onOpenChange} title="Delete conversation">
+      <div className="grid gap-4 py-2">
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          Are you sure you want to delete <span className="font-semibold text-foreground">"{conversation?.title ?? "this conversation"}"</span>? 
+          This will permanently delete all <span className="font-semibold text-foreground">{conversation?.messageCount ?? 0} messages</span> and cannot be undone.
+        </p>
+        <div className="flex justify-end gap-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
+          <Button variant="destructive" onClick={onDelete}>Delete</Button>
+        </div>
       </div>
     </Dialog>
   );
@@ -64,17 +70,26 @@ export function DeleteConversationDialog({
 export function ExportChatDialog({
   open,
   conversation,
-  onOpenChange
+  onOpenChange,
+  onExport
 }: {
   open: boolean;
   conversation: Conversation | undefined;
   onOpenChange: (open: boolean) => void;
+  onExport: (format: "markdown" | "json" | "txt" | "pdf") => void;
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange} title="Export chat" description="Choose a local export format for this conversation.">
       <div className="grid gap-2">
-        {["Markdown", "JSON", "PDF"].map((format) => (
-          <Button key={format} variant="outline" onClick={() => onOpenChange(false)}>
+        {["Markdown", "JSON", "TXT", "PDF"].map((format) => (
+          <Button
+            key={format}
+            variant="outline"
+            onClick={() => {
+              onExport(format.toLowerCase() as "markdown" | "json" | "txt" | "pdf");
+              onOpenChange(false);
+            }}
+          >
             Export {conversation?.title ?? "conversation"} as {format}
           </Button>
         ))}

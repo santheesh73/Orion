@@ -34,7 +34,7 @@ export function DropdownMenu({
       <span
         role="button"
         tabIndex={0}
-        className="contents"
+        className="cursor-pointer inline-flex items-center"
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}

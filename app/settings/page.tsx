@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type ChangeEvent, type ComponentType } from "react";
-import { m } from "framer-motion";
+import { motion } from "framer-motion";
 import { useTheme as useNextTheme } from "next-themes";
 import {
   Accessibility,
@@ -178,7 +178,7 @@ export default function SettingsPage() {
             </div>
           </aside>
 
-          <m.main
+          <motion.main
             key={active}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -198,7 +198,7 @@ export default function SettingsPage() {
             {!loading && active === "pwa" ? <PWAPanel /> : null}
             {!loading && active === "personalization" ? <PersonalizationPanel settings={settings} update={update} /> : null}
             {!loading && active === "about" ? <AboutPanel /> : null}
-          </m.main>
+          </motion.main>
         </div>
       </div>
     </div>
@@ -739,14 +739,14 @@ function PWAPanel() {
 
 function StatusCard({ icon: Icon, label, value, ok }: { icon: ComponentType<{ className?: string }>; label: string; value: string; ok: boolean }) {
   return (
-    <div className="rounded-md border border-border bg-background p-4 transition-colors hover:border-primary/50">
+    <div className="rounded-md border border-border bg-background p-4">
       <div className="flex items-center gap-2 text-sm font-medium">
         <Icon className="size-4" />
         {label}
       </div>
       <div className="mt-3 flex items-center justify-between gap-2">
         <p className="break-words text-sm text-muted-foreground">{value}</p>
-        <Badge variant={ok ? "success" : "warning"} pulse>{ok ? "OK" : "Review"}</Badge>
+        <Badge variant={ok ? "success" : "warning"}>{ok ? "OK" : "Review"}</Badge>
       </div>
     </div>
   );

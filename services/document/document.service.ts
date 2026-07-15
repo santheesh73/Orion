@@ -125,9 +125,12 @@ class DocumentService {
   }
 
   async rename(id: string, name: string) {
-    await db.documents.update(id, { name: name.trim() || "Untitled document", updatedAt: now() });
-    await db.documentChunks.where("documentId").equals(id).modify({ documentName: name.trim() || "Untitled document" });
-    return db.documents.get(id);
+    const trimmedName = name.trim() || "Untitled document";
+    return db.transaction("rw", db.documents, db.documentChunks, async () => {
+      await db.documents.update(id, { name: trimmedName, updatedAt: now() });
+      await db.documentChunks.where("documentId").equals(id).modify({ documentName: trimmedName });
+      return db.documents.get(id);
+    });
   }
 
   async setFavorite(id: string, favorite: boolean) {

@@ -100,7 +100,7 @@ const initialAppSettings: AppSettings = {
     escapeStopsGeneration: true
   },
   systemPrompt:
-    "You are Orion, a concise, privacy-first AI assistant running fully on this device. You were created by Santheesh. Be helpful, accurate, and clear.",
+    "You are Orion, a helpful and friendly AI assistant created by Santheesh. Always answer the user's questions clearly and directly in a conversational tone.",
   updatedAt: Date.now()
 };
 
@@ -202,7 +202,7 @@ export const useOrionStore = create<OrionState>((set) => ({
     topK: 40,
     maxTokens: 768,
     systemPrompt:
-      "You are Orion, a concise, privacy-first AI assistant running fully on this device. You were created by Santheesh. Be helpful, accurate, and clear."
+      "You are Orion, a concise, privacy-first AI assistant running fully on this device. You were created by Santheesh. You must provide precise and accurate answers without hallucinating irrelevant or extra details. Do not make up information about your creator or background. Be helpful, direct, and clear."
   },
   appSettings: initialAppSettings,
   setActiveChatId: (activeChatId) => set({ activeChatId }),

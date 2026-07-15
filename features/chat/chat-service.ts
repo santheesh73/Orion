@@ -43,8 +43,26 @@ export async function addMessage(chatId: string, role: MessageRole, content: str
     content,
     createdAt: now()
   };
-  await db.messages.put(message);
-  await db.conversations.update(chatId, { updatedAt: now(), lastMessagePreview: content.slice(0, 180) });
+
+  await db.transaction("rw", db.conversations, db.messages, async () => {
+    await db.messages.put(message);
+    const chat = await db.conversations.get(chatId);
+    if (chat) {
+      const isFirstUserMessage = (chat.messageCount ?? 0) === 0 && role === "user";
+      const updates: any = { 
+        updatedAt: now(), 
+        lastMessagePreview: content.slice(0, 180),
+        messageCount: (chat.messageCount ?? 0) + 1
+      };
+
+      if (isFirstUserMessage && chat.title === "New conversation") {
+        updates.title = content.slice(0, 30) + (content.length > 30 ? "..." : "");
+      }
+
+      await db.conversations.update(chatId, updates);
+    }
+  });
+
   return message;
 }
 
@@ -62,3 +80,36 @@ export async function deleteChat(chatId: string) {
 export async function updateMessageContent(messageId: string, content: string) {
   await db.messages.update(messageId, { content });
 }
+
+export async function duplicateChat(chatId: string): Promise<ChatThread> {
+  const original = await db.conversations.get(chatId);
+  if (!original) throw new Error("Conversation not found");
+
+  const newId = createId("chat");
+  const duplicatedThread: ChatThread = {
+    ...original,
+    id: newId,
+    title: original.title.endsWith(" (Copy)") ? original.title : `${original.title} (Copy)`,
+    createdAt: now(),
+    updatedAt: now(),
+  };
+
+  const originalMessages = await db.messages.where("chatId").equals(chatId).sortBy("createdAt");
+  const duplicatedMessages = originalMessages.map(msg => ({
+    ...msg,
+    id: createId("msg"),
+    chatId: newId,
+    createdAt: msg.createdAt,
+    updatedAt: msg.updatedAt ? now() : undefined,
+  }));
+
+  await db.transaction("rw", db.conversations, db.messages, async () => {
+    await db.conversations.put(duplicatedThread);
+    if (duplicatedMessages.length > 0) {
+      await db.messages.bulkPut(duplicatedMessages);
+    }
+  });
+
+  return duplicatedThread;
+}
+

@@ -4,20 +4,20 @@
 
 :root {
   color-scheme: light;
-  --background: 250 250 248;
-  --foreground: 22 24 29;
-  --surface: 247 248 250;
+  --background: 252 248 245;
+  --foreground: 29 22 20;
+  --surface: 250 244 240;
   --surface-elevated: 255 255 255;
   --card: 255 255 255;
-  --card-foreground: 22 24 29;
+  --card-foreground: 29 22 20;
   --popover: 255 255 255;
-  --popover-foreground: 22 24 29;
-  --primary: 34 86 255;
+  --popover-foreground: 29 22 20;
+  --primary: 239 68 68;
   --primary-foreground: 255 255 255;
-  --secondary: 239 241 244;
-  --secondary-foreground: 34 38 45;
-  --accent: 21 184 111;
-  --accent-foreground: 5 38 24;
+  --secondary: 242 232 227;
+  --secondary-foreground: 45 34 30;
+  --accent: 244 63 94;
+  --accent-foreground: 255 255 255;
   --success: 26 162 91;
   --success-foreground: 255 255 255;
   --warning: 226 150 35;
@@ -26,13 +26,13 @@
   --error-foreground: 255 255 255;
   --destructive: 225 63 63;
   --destructive-foreground: 255 255 255;
-  --muted: 239 241 244;
-  --muted-foreground: 101 109 122;
-  --border: 220 224 230;
-  --input: 220 224 230;
-  --ring: 55 108 255;
-  --hover: 232 236 242;
-  --focus: 55 108 255;
+  --muted: 242 232 227;
+  --muted-foreground: 122 105 98;
+  --border: 230 218 212;
+  --input: 230 218 212;
+  --ring: 239 68 68;
+  --hover: 240 228 222;
+  --focus: 239 68 68;
   --disabled: 210 215 222;
   --disabled-foreground: 129 138 151;
   --glass: 255 255 255;
@@ -51,44 +51,70 @@
 
 .dark {
   color-scheme: dark;
-  --background: 14 16 21;
-  --foreground: 244 244 245;
-  --surface: 20 22 28;
-  --surface-elevated: 24 26 33;
-  --card: 20 22 28;
-  --card-foreground: 244 244 245;
-  --popover: 28 30 38;
-  --popover-foreground: 244 244 245;
-  --primary: 94 106 210;
+  --background: 9 9 11;
+  --foreground: 250 250 250;
+  --surface: 24 24 27;
+  --surface-elevated: 39 39 42;
+  --card: 24 24 27;
+  --card-foreground: 250 250 250;
+  --popover: 24 24 27;
+  --popover-foreground: 250 250 250;
+  --primary: 239 68 68;
   --primary-foreground: 255 255 255;
-  --secondary: 32 35 44;
-  --secondary-foreground: 235 235 238;
-  --accent: 67 215 138;
-  --accent-foreground: 4 30 17;
-  --success: 67 215 138;
-  --success-foreground: 4 30 17;
-  --warning: 246 188 86;
-  --warning-foreground: 38 25 5;
-  --error: 240 82 82;
+  --secondary: 39 39 42;
+  --secondary-foreground: 250 250 250;
+  --accent: 244 63 94;
+  --accent-foreground: 255 255 255;
+  --success: 34 197 94;
+  --success-foreground: 255 255 255;
+  --warning: 250 204 21;
+  --warning-foreground: 9 9 11;
+  --error: 239 68 68;
   --error-foreground: 255 255 255;
-  --destructive: 240 82 82;
+  --destructive: 239 68 68;
   --destructive-foreground: 255 255 255;
-  --muted: 32 35 44;
-  --muted-foreground: 138 143 152;
-  --border: 39 42 53;
-  --input: 44 47 60;
-  --ring: 94 106 210;
-  --hover: 41 44 55;
-  --focus: 94 106 210;
-  --disabled: 44 47 60;
-  --disabled-foreground: 138 143 152;
-  --glass: 20 22 28;
+  --muted: 39 39 42;
+  --muted-foreground: 161 161 170;
+  --border: 39 39 42;
+  --input: 39 39 42;
+  --ring: 239 68 68;
+  --hover: 39 39 42;
+  --focus: 239 68 68;
+  --disabled: 39 39 42;
+  --disabled-foreground: 113 113 122;
+  --glass: 255 255 255;
   --glass-border: 255 255 255;
   --shadow-soft: 0 4px 14px rgba(0, 0, 0, 0.4);
   --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.5);
   --shadow-large: 0 30px 60px rgba(0, 0, 0, 0.6);
   --shadow-glass: 0 20px 70px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   --shadow-floating-panel: 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  border-radius: 24px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4), 0 0 40px rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 @theme inline {
@@ -152,6 +178,9 @@
 
 * {
   border-color: rgb(var(--border));
+  transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 250ms;
 }
 
 html {
@@ -167,6 +196,13 @@ body {
     "rlig" 1,
     "calt" 1;
   text-rendering: optimizeLegibility;
+}
+
+.dark body {
+  background: radial-gradient(ellipse at 80% 0%, rgba(255, 140, 0, 0.2) 0%, transparent 50%),
+              radial-gradient(ellipse at 20% 100%, rgba(255, 154, 139, 0.2) 0%, transparent 50%),
+              rgb(var(--background));
+  background-attachment: fixed;
 }
 
 ::selection {

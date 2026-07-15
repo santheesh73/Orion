@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Orion">
-  <rect width="64" height="64" rx="14" fill="#0c0e12"/>
-  <path d="M32 10l5.2 16.3L54 32l-16.8 5.7L32 54l-5.2-16.3L10 32l16.8-5.7L32 10z" fill="#5b8dff"/>
-  <circle cx="32" cy="32" r="7" fill="#43d78a"/>
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="50" cy="50" rx="26" ry="35" fill="none" stroke="#ef4444" stroke-width="14" />
+  <ellipse cx="50" cy="50" rx="46" ry="14" transform="rotate(-30 50 50)" fill="none" stroke="#ef4444" stroke-width="3" />
+  <circle cx="89.8" cy="27" r="5" fill="#ef4444" />
+  <circle cx="10.2" cy="73" r="5" fill="#ef4444" />
 </svg>

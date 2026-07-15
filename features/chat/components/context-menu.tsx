@@ -11,7 +11,9 @@ export function ConversationContextMenu({
   onRename,
   onDelete,
   onTogglePin,
-  onToggleFavorite
+  onToggleFavorite,
+  onDuplicate,
+  onExport
 }: {
   conversation: Conversation | null;
   x: number;
@@ -21,6 +23,8 @@ export function ConversationContextMenu({
   onDelete: () => void;
   onTogglePin?: () => void;
   onToggleFavorite?: () => void;
+  onDuplicate?: () => void;
+  onExport?: () => void;
 }) {
   if (!conversation) {
     return null;
@@ -28,10 +32,10 @@ export function ConversationContextMenu({
 
   const items = [
     { label: "Rename", icon: Pencil, action: onRename },
-    { label: "Duplicate", icon: Copy, action: onClose },
+    { label: "Duplicate", icon: Copy, action: onDuplicate ?? onClose },
     { label: conversation.pinned ? "Unpin" : "Pin", icon: Pin, action: onTogglePin ?? onClose },
     { label: conversation.favorite ? "Unfavorite" : "Favorite", icon: Heart, action: onToggleFavorite ?? onClose },
-    { label: "Export", icon: Download, action: onClose },
+    { label: "Export", icon: Download, action: onExport ?? onClose },
     { label: "Delete", icon: Trash2, action: onDelete, danger: true }
   ];
 
@@ -52,7 +56,10 @@ export function ConversationContextMenu({
               role="menuitem"
               className="flex h-9 w-full items-center gap-2 rounded-md px-2 text-sm transition hover:bg-hover data-[danger=true]:text-error"
               data-danger={item.danger ? "true" : undefined}
-              onClick={item.action}
+              onClick={() => {
+                item.action();
+                onClose();
+              }}
             >
               <Icon className="size-4" />
               {item.label}

@@ -107,7 +107,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
     escapeStopsGeneration: true
   },
   systemPrompt:
-    "You are Orion, a concise, privacy-first AI assistant running fully on this device. You were created by Santheesh. Be helpful, accurate, and clear.",
+    "You are Orion, a helpful and friendly AI assistant created by Santheesh. Always answer the user's questions clearly and directly in a conversational tone.",
   updatedAt: Date.now()
 };
 

@@ -10,7 +10,7 @@ export function Tooltip({ children, content, side = "top" }: { children: ReactNo
 
   return (
     <span className="relative inline-flex" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)} onFocus={() => setOpen(true)} onBlur={() => setOpen(false)}>
-      <span aria-describedby={id} className="contents">{children}</span>
+      <span aria-describedby={id} className="inline-flex">{children}</span>
       <AnimatePresence>
         {open ? (
           <m.span

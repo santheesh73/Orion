@@ -3,18 +3,19 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
-import { Copy, UserRound, Sparkles } from "lucide-react";
+import { Copy, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils/cn";
 import type { ChatMessage } from "@/types/orion";
+import { LogoIcon } from "@/components/common/logo";
 
 export function MessageList({ messages }: { messages: ChatMessage[] }) {
   if (messages.length === 0) {
     return (
       <div className="grid min-h-[48vh] place-items-center px-6 text-center">
         <div className="max-w-xl">
-          <div className="mx-auto grid size-14 place-items-center rounded-lg border border-border bg-card">
-            <Sparkles className="size-6" />
+          <div className="mx-auto flex size-14 items-center justify-center">
+            <LogoIcon size={48} />
           </div>
           <h1 className="mt-6 text-3xl font-semibold tracking-tight sm:text-5xl">Ask privately. Think locally.</h1>
           <p className="mt-4 text-sm leading-6 text-muted-foreground sm:text-base">
@@ -36,7 +37,7 @@ export function MessageList({ messages }: { messages: ChatMessage[] }) {
           )}
         >
           <div className="grid size-8 shrink-0 place-items-center rounded-md bg-background">
-            {message.role === "user" ? <UserRound className="size-4" /> : <Sparkles className="size-4" />}
+            {message.role === "user" ? <UserRound className="size-4" /> : <LogoIcon size={20} />}
           </div>
           <div className="min-w-0 flex-1">
             <div className="mb-2 flex items-center justify-between gap-3">

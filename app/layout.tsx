@@ -28,10 +28,10 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/icons/icon.svg", type: "image/svg+xml" }
+      { url: "/favicon.svg?v=2", type: "image/svg+xml" },
+      { url: "/icons/icon.svg?v=2", type: "image/svg+xml" }
     ],
-    apple: "/icons/icon.svg"
+    apple: "/icons/icon.svg?v=2"
   },
   openGraph: {
     title: "Orion - Private On-Device AI",

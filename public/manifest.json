@@ -12,9 +12,9 @@
   "id": "/?source=pwa",
   "icons": [
     {
-      "src": "/icons/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/icon",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ],
@@ -41,28 +41,28 @@
       "short_name": "Chat",
       "description": "Open Orion Chat",
       "url": "/chat",
-      "icons": [{ "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+      "icons": [{ "src": "/icon", "sizes": "192x192 512x512", "type": "image/png" }]
     },
     {
       "name": "Documents",
       "short_name": "Docs",
       "description": "Open local document intelligence",
       "url": "/documents",
-      "icons": [{ "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+      "icons": [{ "src": "/icon", "sizes": "192x192 512x512", "type": "image/png" }]
     },
     {
       "name": "Model Manager",
       "short_name": "Models",
       "description": "Manage local AI models",
       "url": "/models",
-      "icons": [{ "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+      "icons": [{ "src": "/icon", "sizes": "192x192 512x512", "type": "image/png" }]
     },
     {
       "name": "Performance",
       "short_name": "Perf",
       "description": "Inspect offline and performance status",
       "url": "/performance",
-      "icons": [{ "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+      "icons": [{ "src": "/icon", "sizes": "192x192 512x512", "type": "image/png" }]
     }
   ],
   "prefer_related_applications": false

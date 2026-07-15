@@ -1,60 +1,78 @@
 "use client";
 
-import { m } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 
+const STATUS_MESSAGES = [
+  "Thinking locally...",
+  "Understanding your question...",
+  "Searching local context...",
+  "Generating response...",
+  "Almost ready..."
+];
+
 export function TypingIndicator() {
-  const [text, setText] = useState("Thinking locally...");
+  const [statusIndex, setStatusIndex] = useState(0);
 
   useEffect(() => {
-    const timer = setTimeout(() => setText("Generating response..."), 2500);
-    return () => clearTimeout(timer);
+    const interval = setInterval(() => {
+      setStatusIndex((prev) => (prev + 1) % STATUS_MESSAGES.length);
+    }, 1500);
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <m.div
-      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: 10, scale: 0.95, transition: { duration: 0.2 } }}
-      transition={{ type: "spring", stiffness: 400, damping: 25 }}
-      className="flex w-max items-center gap-4 rounded-2xl border border-primary/20 bg-surface/80 p-3 pr-5 shadow-floating-panel backdrop-blur-md"
+    <motion.div
+      initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      exit={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+      className="flex flex-col items-center justify-center gap-4 py-8"
       aria-label="Orion is preparing a response"
     >
-      <div className="relative flex size-8 items-center justify-center">
-        <m.div 
+      <motion.div
+        animate={{ y: [0, -6, 0] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        className="relative flex items-center justify-center size-14"
+      >
+        <motion.div
+          animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute inset-0 rounded-full bg-gradient-to-tr from-blue-500/20 to-teal-400/20 blur-xl"
+        />
+        
+        <motion.div
           animate={{ rotate: 360 }}
-          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-0 rounded-full border-2 border-transparent border-t-primary border-r-accent opacity-70"
+          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 rounded-full border-[1.5px] border-t-blue-500/60 border-r-teal-400/60 border-b-transparent border-l-transparent"
         />
-        <m.div 
-          animate={{ scale: [1, 1.1, 1], opacity: [0.5, 1, 0.5] }}
+
+        <motion.div
+          animate={{ rotate: -360 }}
+          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-1.5 rounded-full border-[1.5px] border-b-blue-400/50 border-l-teal-300/50 border-t-transparent border-r-transparent"
+        />
+
+        <motion.div
+          animate={{ scale: [0.85, 1, 0.85] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute inset-0 rounded-full bg-primary/20 blur-md"
+          className="size-5 rounded-full bg-gradient-to-tr from-blue-500 to-teal-400 shadow-[0_0_15px_rgba(56,189,248,0.5)]"
         />
-        <Sparkles className="size-4 text-primary relative z-10" />
+      </motion.div>
+
+      <div className="h-6 overflow-hidden relative w-64 flex justify-center">
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={statusIndex}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="absolute text-sm font-medium bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400"
+          >
+            {STATUS_MESSAGES[statusIndex]}
+          </motion.span>
+        </AnimatePresence>
       </div>
-      
-      <div className="flex flex-col gap-0.5">
-        <m.span 
-          key={text}
-          initial={{ opacity: 0, y: 2 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-sm font-medium text-foreground bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
-        >
-          {text}
-        </m.span>
-        <div className="flex gap-1">
-          {[0, 1, 2].map((dot) => (
-            <m.span
-              key={dot}
-              className="size-1 rounded-full bg-primary/60"
-              animate={{ opacity: [0.3, 1, 0.3], y: [0, -2, 0] }}
-              transition={{ duration: 0.9, repeat: Infinity, delay: dot * 0.15, ease: "easeInOut" }}
-            />
-          ))}
-        </div>
-      </div>
-    </m.div>
+    </motion.div>
   );
 }

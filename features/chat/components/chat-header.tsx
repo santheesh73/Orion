@@ -1,6 +1,6 @@
 "use client";
 
-import { Command, Download, Info, MoreHorizontal, Pencil, Trash2, WifiOff, MessageSquarePlus } from "lucide-react";
+import { Command, Download, Info, MoreHorizontal, Pencil, Trash2, WifiOff, MessageSquarePlus, Upload } from "lucide-react";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,7 @@ export function ChatHeader({
   onRename,
   onDelete,
   onExport,
+  onImport,
   onInfo,
   onOpenCommand,
   onNewChat
@@ -30,6 +31,7 @@ export function ChatHeader({
   onRename: () => void;
   onDelete: () => void;
   onExport: () => void;
+  onImport: () => void;
   onInfo: () => void;
   onOpenCommand: () => void;
   onNewChat: () => void;
@@ -55,35 +57,7 @@ export function ChatHeader({
       </div>
 
       <div className="flex items-center gap-1">
-
-        <Button aria-label="Open chat command palette" variant="ghost" size="icon" onClick={onOpenCommand}>
-          <Command className="size-5" />
-        </Button>
         <ThemeToggle />
-        <DropdownMenu
-          trigger={
-            <Button aria-label="Open conversation menu" variant="ghost" size="icon">
-              <MoreHorizontal />
-            </Button>
-          }
-        >
-          <DropdownMenuItem onClick={onInfo}>
-            <Info className="size-4" />
-            Conversation info
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={onExport}>
-            <Download className="size-4" />
-            Export chat
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={onRename}>
-            <Pencil className="size-4" />
-            Rename
-          </DropdownMenuItem>
-          <DropdownMenuItem className="text-error" onClick={onDelete}>
-            <Trash2 className="size-4" />
-            Delete
-          </DropdownMenuItem>
-        </DropdownMenu>
       </div>
     </header>
   );
