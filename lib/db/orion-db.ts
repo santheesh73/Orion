@@ -33,7 +33,7 @@ class OrionDatabase extends Dexie {
   documentChunks!: Table<OrionDocumentChunk, string>;
   documentFolders!: Table<DocumentFolder, string>;
   documentSearchHistory!: Table<DocumentSearchHistory, string>;
-  metadata!: Table<{ id: string; key: string; value: any }, string>;
+  metadata!: Table<{ id: string; key: string; value: unknown }, string>;
   searchIndex!: Table<{ id: string; targetId: string; text: string; type: string }, string>;
   pinnedChats!: Table<{ id: string; chatId: string; pinnedAt: number }, string>;
 

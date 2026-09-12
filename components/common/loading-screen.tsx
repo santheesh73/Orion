@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence, useMotionTemplate, useMotionValue } from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Check, Cpu, Globe, Lock, Shield } from "lucide-react";
 import { LogoIcon } from "@/components/common/logo";
 import { useOrionStore } from "@/store/orion-store";

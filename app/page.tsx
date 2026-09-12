@@ -2,14 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   ArrowRight, Shield, Zap, FileSearch, Cpu, Download, 
-  Database, Fingerprint, Github, FileText, CheckCircle2,
-  Lock, Search, Folder, Globe, Laptop, HardDrive, Share2, Sparkles
+  Database, Github, FileText, CheckCircle2,
+  Lock, Search, Folder, Globe, Laptop, HardDrive
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { GalaxyBackground } from "@/components/layout/galaxy-background";
 import { LogoIcon } from "../components/common/logo";
 import { useAI } from "@/hooks/useAI";
 import { DEFAULT_MODEL_ID } from "@/lib/constants/models";

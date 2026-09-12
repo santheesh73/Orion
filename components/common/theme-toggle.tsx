@@ -7,7 +7,7 @@ import { Tooltip } from "@/components/ui/tooltip";
 import { useMounted } from "@/hooks/use-mounted";
 import { AnimatePresence, m } from "framer-motion";
 
-export function ThemeToggle({ side = "bottom", align }: { side?: "top" | "bottom"; align?: "start" | "end" }) {
+export function ThemeToggle({ side = "bottom" }: { side?: "top" | "bottom"; align?: "start" | "end" }) {
   const { setTheme, resolvedTheme } = useTheme();
   const mounted = useMounted();
   const isDark = mounted && resolvedTheme === "dark";

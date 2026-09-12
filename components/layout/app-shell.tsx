@@ -11,7 +11,6 @@ import { Logo, LogoIcon } from "@/components/common/logo";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { PWAStatus } from "@/components/pwa/pwa-status";
 import { Button } from "@/components/ui/button";
-import { GalaxyBackground } from "@/components/layout/galaxy-background";
 import { useOrionStore } from "@/store/orion-store";
 import { cn } from "@/lib/utils/cn";
 

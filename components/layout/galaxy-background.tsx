@@ -16,7 +16,7 @@ export function GalaxyBackground() {
     let particles: Particle[] = [];
     
     // Mouse interaction
-    let mouse = {
+    const mouse = {
       x: typeof window !== "undefined" ? window.innerWidth / 2 : 0,
       y: typeof window !== "undefined" ? window.innerHeight / 2 : 0
     };
@@ -61,20 +61,20 @@ export function GalaxyBackground() {
         let targetOpacity = 0;
         
         // Interactive repulsion
-        let dx = mouseX - targetX;
-        let dy = mouseY - targetY;
-        let distance = Math.sqrt(dx * dx + dy * dy);
+        const dx = mouseX - targetX;
+        const dy = mouseY - targetY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
         
         const maxDistance = 250;
         
         if (distance < maxDistance) {
             targetOpacity = this.baseOpacity;
-            let forceDirectionX = dx / distance;
-            let forceDirectionY = dy / distance;
+            const forceDirectionX = dx / distance;
+            const forceDirectionY = dy / distance;
             // Force depends on closeness
-            let force = (maxDistance - distance) / maxDistance;
-            let directionX = forceDirectionX * force * this.density * 5.0;
-            let directionY = forceDirectionY * force * this.density * 5.0;
+            const force = (maxDistance - distance) / maxDistance;
+            const directionX = forceDirectionX * force * this.density * 5.0;
+            const directionY = forceDirectionY * force * this.density * 5.0;
             
             targetX -= directionX;
             targetY -= directionY;
