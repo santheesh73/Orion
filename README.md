@@ -48,7 +48,7 @@ For production PWA testing, use the built app from `npm run start` and open it i
 
 ## Demo Flow
 
-1. Open the landing page and explain the zero-cloud promise.
+1. Open landing page and explain the zero-cloud promise.
 2. Install Orion as a PWA.
 3. Open Models and download a local AI model.
 4. Start Chat and generate a response.
