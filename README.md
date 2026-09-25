@@ -24,7 +24,7 @@ Most AI assistants depend on remote inference. Orion proves a different product 
 
 ## Tech Stack
 
-Next.js App Router, React, TypeScript, Tailwind CSS v4, Framer Motion, Lucide, Dexie, IndexedDB, Web Workers, WebLLM, WebGPU, Service Workers, and browser Cache Storage.
+Next.js App Router, React, TypeScript, Tailwind CSS v4, Framer Motion Lucide, Dexie, IndexedDB, Web Workers, WebLLM, WebGPU, Service Workers, and browser Cache Storage.
 
 ## Quick Start
 
