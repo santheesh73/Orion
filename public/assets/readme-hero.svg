@@ -1,0 +1,266 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 480" width="100%" height="100%" role="img" aria-label="Orion - On-Device AI">
+  <defs>
+    <!-- Background Gradients -->
+    <radialGradient id="bgGradient" cx="50%" cy="45%" r="65%">
+      <stop offset="0%" stop-color="#0c1322"/>
+      <stop offset="50%" stop-color="#070a12"/>
+      <stop offset="100%" stop-color="#040609"/>
+    </radialGradient>
+
+    <radialGradient id="coreGlowGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.9"/>
+      <stop offset="25%" stop-color="#60a5fa" stop-opacity="0.5"/>
+      <stop offset="60%" stop-color="#818cf8" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#060913" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="nebulaBlue" cx="30%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="nebulaViolet" cx="70%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="orbitGradCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#818cf8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.8"/>
+    </linearGradient>
+
+    <linearGradient id="orbitGradViolet" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#c084fc" stop-opacity="0.7"/>
+      <stop offset="50%" stop-color="#38bdf8" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#818cf8" stop-opacity="0.7"/>
+    </linearGradient>
+
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="70%" stop-color="#f1f5f9"/>
+      <stop offset="100%" stop-color="#94a3b8"/>
+    </linearGradient>
+
+    <linearGradient id="badgeBorder" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.4"/>
+      <stop offset="50%" stop-color="#818cf8" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.4"/>
+    </linearGradient>
+
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="superGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="16" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    @keyframes pulseCore {
+      0%, 100% {
+        transform: scale(0.95);
+        opacity: 0.85;
+      }
+      50% {
+        transform: scale(1.06);
+        opacity: 1;
+      }
+    }
+
+    @keyframes rotateClockwise {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes rotateCounter {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(-360deg); }
+    }
+
+    @keyframes particleBlink {
+      0%, 100% { opacity: 0.2; transform: scale(0.8); }
+      50% { opacity: 0.9; transform: scale(1.2); }
+    }
+
+    @keyframes streamFlow {
+      0% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: -120; }
+    }
+
+    @keyframes floatGentle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .core-pulsing {
+      transform-origin: 600px 215px;
+      animation: pulseCore 6s ease-in-out infinite;
+    }
+
+    .orbit-1 {
+      transform-origin: 600px 215px;
+      animation: rotateClockwise 45s linear infinite;
+    }
+
+    .orbit-2 {
+      transform-origin: 600px 215px;
+      animation: rotateCounter 60s linear infinite;
+    }
+
+    .orbit-stream {
+      animation: streamFlow 12s linear infinite;
+    }
+
+    .particle-a {
+      animation: particleBlink 4s ease-in-out infinite;
+    }
+
+    .particle-b {
+      animation: particleBlink 5s ease-in-out infinite 1.5s;
+    }
+
+    .particle-c {
+      animation: particleBlink 6s ease-in-out infinite 3s;
+    }
+
+    .hero-badge {
+      animation: floatGentle 5s ease-in-out infinite;
+    }
+  </style>
+
+  <!-- Canvas Backdrop -->
+  <rect width="1200" height="480" fill="url(#bgGradient)"/>
+  
+  <!-- Subtle Nebulas -->
+  <circle cx="360" cy="200" r="280" fill="url(#nebulaBlue)"/>
+  <circle cx="840" cy="220" r="280" fill="url(#nebulaViolet)"/>
+
+  <!-- Technical Grid Pattern -->
+  <g stroke="#38bdf8" stroke-width="0.5" opacity="0.04">
+    <line x1="0" y1="80" x2="1200" y2="80"/>
+    <line x1="0" y1="160" x2="1200" y2="160"/>
+    <line x1="0" y1="240" x2="1200" y2="240"/>
+    <line x1="0" y1="320" x2="1200" y2="320"/>
+    <line x1="0" y1="400" x2="1200" y2="400"/>
+    <line x1="200" y1="0" x2="200" y2="480"/>
+    <line x1="400" y1="0" x2="400" y2="480"/>
+    <line x1="600" y1="0" x2="600" y2="480"/>
+    <line x1="800" y1="0" x2="800" y2="480"/>
+    <line x1="1000" y1="0" x2="1000" y2="480"/>
+  </g>
+
+  <!-- Technical Corner Marks -->
+  <g stroke="#38bdf8" stroke-width="1" opacity="0.3">
+    <path d="M 30,45 L 30,30 L 45,30"/>
+    <path d="M 1170,45 L 1170,30 L 1155,30"/>
+    <path d="M 30,435 L 30,450 L 45,450"/>
+    <path d="M 1170,435 L 1170,450 L 1155,450"/>
+  </g>
+
+  <!-- Subtle Constellation Geometry (Background Depth) -->
+  <g stroke="#94a3b8" stroke-width="0.75" opacity="0.15">
+    <!-- Star nodes & lines representing celestial Orion -->
+    <line x1="160" y1="120" x2="240" y2="170"/>
+    <line x1="240" y1="170" x2="210" y2="280"/>
+    <line x1="210" y1="280" x2="140" y2="320"/>
+    <circle cx="160" cy="120" r="1.5" fill="#38bdf8" class="particle-a"/>
+    <circle cx="240" cy="170" r="2" fill="#ffffff" class="particle-b"/>
+    <circle cx="210" cy="280" r="1.5" fill="#818cf8" class="particle-c"/>
+    <circle cx="140" cy="320" r="2" fill="#ffffff" class="particle-a"/>
+
+    <line x1="1040" y1="120" x2="960" y2="170"/>
+    <line x1="960" y1="170" x2="990" y2="280"/>
+    <line x1="990" y1="280" x2="1060" y2="320"/>
+    <circle cx="1040" cy="120" r="1.5" fill="#38bdf8" class="particle-b"/>
+    <circle cx="960" cy="170" r="2" fill="#ffffff" class="particle-a"/>
+    <circle cx="990" cy="280" r="1.5" fill="#818cf8" class="particle-c"/>
+    <circle cx="1060" cy="320" r="2" fill="#ffffff" class="particle-b"/>
+  </g>
+
+  <!-- Ambient Core Radiance -->
+  <circle cx="600" cy="215" r="160" fill="url(#coreGlowGrad)" class="core-pulsing"/>
+
+  <!-- Orbital Rings System -->
+  <!-- Outer Rotating Orbit (Tilted) -->
+  <g class="orbit-1">
+    <ellipse cx="600" cy="215" rx="260" ry="86" fill="none" stroke="url(#orbitGradCyan)" stroke-width="1.2" stroke-dasharray="14 10" class="orbit-stream" opacity="0.6"/>
+    <!-- Outer Orbit Satellite Node -->
+    <circle cx="860" cy="215" r="3.5" fill="#38bdf8" filter="url(#softGlow)"/>
+    <circle cx="340" cy="215" r="2.5" fill="#818cf8" opacity="0.7"/>
+  </g>
+
+  <!-- Secondary Counter-Rotating Orbit -->
+  <g class="orbit-2">
+    <ellipse cx="600" cy="215" rx="200" ry="110" fill="none" stroke="url(#orbitGradViolet)" stroke-width="1" stroke-dasharray="6 8" opacity="0.45"/>
+    <circle cx="600" cy="105" r="3" fill="#a78bfa" filter="url(#softGlow)"/>
+    <circle cx="600" cy="325" r="2" fill="#38bdf8" opacity="0.6"/>
+  </g>
+
+  <!-- Orion Primary Orbital Ring (Authentic Logo Axis) -->
+  <g transform="rotate(-28 600 215)">
+    <ellipse cx="600" cy="215" rx="140" ry="46" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.75" filter="url(#softGlow)"/>
+    <!-- Satellite Planet 1 -->
+    <circle cx="740" cy="215" r="5" fill="#38bdf8" filter="url(#softGlow)"/>
+    <circle cx="740" cy="215" r="2" fill="#ffffff"/>
+    <!-- Satellite Planet 2 -->
+    <circle cx="460" cy="215" r="5" fill="#818cf8" filter="url(#softGlow)"/>
+    <circle cx="460" cy="215" r="2" fill="#ffffff"/>
+  </g>
+
+  <!-- Central Celestial Core (Logo Inner Ellipse) -->
+  <g class="core-pulsing">
+    <ellipse cx="600" cy="215" rx="42" ry="58" fill="none" stroke="#60a5fa" stroke-width="4.5" opacity="0.85" filter="url(#softGlow)"/>
+    <ellipse cx="600" cy="215" rx="24" ry="34" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="600" cy="215" r="9" fill="#ffffff" filter="url(#superGlow)"/>
+    <circle cx="600" cy="215" r="4" fill="#38bdf8"/>
+  </g>
+
+  <!-- Floating Micro Particles -->
+  <circle cx="530" cy="150" r="1.5" fill="#38bdf8" class="particle-a"/>
+  <circle cx="680" cy="160" r="1" fill="#ffffff" class="particle-b"/>
+  <circle cx="510" cy="270" r="1.2" fill="#818cf8" class="particle-c"/>
+  <circle cx="690" cy="265" r="1.5" fill="#38bdf8" class="particle-a"/>
+  <circle cx="430" cy="220" r="1" fill="#ffffff" class="particle-b"/>
+  <circle cx="770" cy="200" r="1.2" fill="#818cf8" class="particle-c"/>
+
+  <!-- Top Pill Badge -->
+  <g class="hero-badge">
+    <rect x="475" y="44" width="250" height="28" rx="14" fill="#0f172a" fill-opacity="0.85" stroke="url(#badgeBorder)" stroke-width="1"/>
+    <circle cx="493" cy="58" r="3.5" fill="#10b981" filter="url(#softGlow)"/>
+    <text x="506" y="62" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" letter-spacing="0.18em">ON-DEVICE AI RUNTIME</text>
+  </g>
+
+  <!-- Core Brand Typography (Rendered within SVG for reliable layout) -->
+  <text x="600" y="380" text-anchor="middle" fill="url(#textGrad)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="34" font-weight="800" letter-spacing="0.45em">ORION</text>
+  <text x="600" y="408" text-anchor="middle" fill="#64748b" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="500" letter-spacing="0.22em">PRIVATE AI · ZERO CLOUD · BROWSER-NATIVE RUNTIME</text>
+
+  <!-- Subtle Bottom Status Strip -->
+  <g transform="translate(240, 442)" opacity="0.75" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="10" font-weight="600" letter-spacing="0.12em" fill="#94a3b8">
+    <g transform="translate(0, 0)">
+      <circle cx="0" cy="-3" r="2.5" fill="#38bdf8"/>
+      <text x="8" y="0">WEBGPU ACCELERATION</text>
+    </g>
+    <g transform="translate(195, 0)">
+      <circle cx="0" cy="-3" r="2.5" fill="#10b981"/>
+      <text x="8" y="0">100% ON-DEVICE</text>
+    </g>
+    <g transform="translate(360, 0)">
+      <circle cx="0" cy="-3" r="2.5" fill="#818cf8"/>
+      <text x="8" y="0">INDEXEDDB PERSISTENCE</text>
+    </g>
+    <g transform="translate(565, 0)">
+      <circle cx="0" cy="-3" r="2.5" fill="#38bdf8"/>
+      <text x="8" y="0">ZERO TELEMETRY</text>
+    </g>
+  </g>
+</svg>
