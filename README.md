@@ -8,7 +8,7 @@ Orion is a premium offline-first AI assistant built for **OSDHack 2026 | On Devi
 
 ## Why Orion
 
-Most AI assistants depend on remote inference. Orion proves a different product boundary: the assistant, model runtime, document intelligence, cache, and settings live inside the browser. Once the app shell and model assets are cached, Orion can continue operating offline.
+Most AI assistants depend on remote inference. Orion proves different product boundary: the assistant, model runtime, document intelligence, cache, and settings live inside the browser. Once the app shell and model assets are cached, Orion can continue operating offline.
 
 ## Highlights
 
